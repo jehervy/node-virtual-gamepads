@@ -9,11 +9,12 @@ express = require('express')
 app  = express()
 http = require('http').Server(app)
 io = require('socket.io')(http)
+config = require './config.json'
 
 gamepad_hub = require './app/virtual_gamepad_hub'
 hub = new gamepad_hub()
 
-app.use( express.static( 'public' ) );
+app.use(express.static(__dirname + '/public'));
 
 io.on 'connection', (socket) ->
 
@@ -31,5 +32,5 @@ io.on 'connection', (socket) ->
     if socket.gamePadId != undefined and data
       hub.sendEvent socket.gamePadId, data
 
-http.listen 80, () ->
-  console.info "Listening on 80"
+http.listen config.port, () ->
+  console.info "Listening on #{config.port}"
