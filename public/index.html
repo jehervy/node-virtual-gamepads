@@ -1,141 +1,21 @@
 <html>
 	<head>
-		<title>Webpad</title>
+		<title>Virtual gamepad</title>
+        <link rel="icon" type="image/png" href="/images/icons/favicon_32.png" />
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <link rel="manifest" href="manifest.json">
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="icon" sizes="192x192" href="images/icons/launcher-icon-4x.png">
 		<script src="js/jquery.js"></script>
 		<script src="js/socket.io.js"></script>
         <script src="js/virtualjoystick.js"></script>
-        <style>
-            body {
-                -moz-user-select: none;
-                -webkit-user-select: none;
-                -ms-user-select:none;
-                user-select:none;
-                -o-user-select:none;
-                font-family: Verdana, Geneva, sans-serif;
-            }
-            td {
-                text-align: center;
-            }
-            #dirContainer {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                height: 100%;
-                width: 35%;
-            }
-            #slotIndicatorContainer {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                width: 100%;
-            }
-            #tableIndicator {
-                width: 50px;
-                margin: 0 auto;
-                margin-top: 10%;
-            }
-            .indicator {
-                width: 5px;
-                height: 10px;
-                background-color: black;
-                margin: 2px;
-                box-shadow: 1px 1px 1px 1px #aaa;
-            }
-            .indicatorSelected {
-                background-color: red;
-            }
-        </style>
-        <script>
-            var initJoystick = function () {
-                var dirCursor = document.getElementById("path6060");
-
-                var joystick = new VirtualJoystick({
-                    mouseSupport: true,
-                    stationaryBase: true,
-                    baseX: $(dirCursor).position().left,
-                    baseY: $(dirCursor).position().top,
-                    limitStickTravel: true,
-                    stickRadius: 50,
-                    baseElement: dirCursor,
-                    container: document.getElementById("dirContainer"),
-                    strokeStyle: '#777f82'
-                });
-
-                setInterval(function(){
-                    if(joystick.left()) {
-                        console.info("!! LEFT !!");
-                    } else if(joystick.right()) {
-                        console.info("!! RIGHT !!");
-                    } else if(joystick.up()) {
-                        console.info("!! UP !!");
-                    } else if(joystick.down()) {
-                        console.info("!! DOWN !!");
-                    }
-                }, 1/30 * 1000);
-            }
-
-            var indicatorOn = false;
-            var slotNumber;
-            var initSlotIndicator = function () {
-                var slotAnimationLoop = function () {
-                    if (slotNumber != undefined) {
-                        $(".indicator").removeClass("indicatorSelected");
-                        console.info("#indicator_"+slotNumber)
-                        $("#indicator_"+(slotNumber+1)).addClass("indicatorSelected");
-                    } else {
-                        if(indicatorOn) {
-                            $(".indicator").removeClass("indicatorSelected");
-                        } else {
-                            $(".indicator").addClass("indicatorSelected");
-                        }
-                        indicatorOn = !indicatorOn;
-                        setTimeout(slotAnimationLoop, 500);
-                    }
-                }
-                slotAnimationLoop();
-            }
-
-            $( function() {
-                initJoystick();
-                initSlotIndicator();
-
-                var socket = io();
-
-                $(".btn").on("mousedown", function() {
-                    console.info("Press button " + this.id);
-                });
-
-                $(".btn").on("mouseup", function() {
-                    console.info("Release button " + this.id);
-                });
-
-                socket.on("gamepadConnected", function(data) {
-                    slotNumber = data.padId;
-                    $("#G").off("mousedown");
-                    $("#G").off("mouseup");
-                    $("#G").on("mousedown", function() {
-                        console.info("PadEvent")
-                        socket.emit("padEvent", {type: 0x01, code: 0x130, value: 1});
-                    });
-                    $("#G").on("mouseup", function() {
-                        socket.emit("padEvent", {type: 0x01, code: 0x130, value: 0});
-                    });
-                });
-
-                socket.on("connect", function() {
-                    socket.emit("connectGamepad", null);
-                });
-            } );
-        </script>
+        <script src="js/virtual_gamepad_client.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
-        <!--
-        <div>Gamepad id : <span id="padId"></span></div>
-        <br>
-		<button id="G">Gamepad</button>
-		-->
         <!--viewBox="80 100 850 400"-->
+        <!--viewBox="0 0 1000 600"-->
+        <!--path3214-->
 
         <div id="slotIndicatorContainer">
             <table id="tableIndicator">
@@ -1113,55 +993,55 @@
             <g
                     inkscape:groupmode="layer"
                     id="layer1"
-                    inkscape:label="Cursors">
-                <circle
-                        style="opacity:0;fill:#e60000;fill-opacity:1;stroke:none;stroke-opacity:1;filter:url(#filter6610)"
-                        id="path6060"
-                        cx="247.50313"
-                        cy="300.00079"
-                        r="0.050000001"
-                        sodipodi:insensitive="true" />
+                    inkscape:label="Cursors"
+                    style="display:inline;opacity:0">
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
+                        style="opacity:0.502;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
                         d="m 745.99765,295.94408 93.3381,-107.48023 42.42641,59.39697 9.89949,69.29647 -36.76955,81.31728 z"
-                        id="btnA" class="btn"
+                        id="btnA" class="btn" data-btn="path3253" data-code="0x130"
                         inkscape:connector-curvature="0"
                         inkscape:label="#btnA" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
-                        d="M 744,294.5 838,186 639.5,185.5 Z"
-                        id="btnX" class="btn"
+                        style="opacity:0.502;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                        d="M 744,294.5 838,186 776.78657,152.39095 707.00214,152.15114 639.5,185.5 Z"
+                        id="btnX" class="btn" data-btn="path3259" data-code="0x133"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
+                        style="opacity:0.49;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
                         d="M 744.5,297.5 854,401 788.5,445.5 709,450.5 635.5,412 Z"
-                        id="btnB" class="btn"
+                        id="btnB" class="btn" data-btn="path3247" data-code="0x131"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
-                        d="M 742.5,296.5 633,411 l -36.5,-59 -8,-70 49,-95 z"
-                        id="btnY" class="btn"
+                        style="opacity:0.51;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                        d="M 742.5,296.5 633,411 l -42.5,-81 3,-74 44,-69 z"
+                        id="btnY" class="btn" data-btn="path3237" data-code="0x134"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
+                        style="opacity:0.494;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
                         d="m 400,291 0,108 80,1 1,-110 z"
-                        id="btnSELECT" class="btn"
+                        id="btnSELECT" class="btn" data-btn="rect3307" data-code="0x13a"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;enable-background:new;fill-opacity:1;opacity:0"
+                        style="opacity:0.517;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;enable-background:new"
                         d="m 489.49769,291.00002 0,108 80,1 1,-110 z"
-                        id="btnSTART" class="btn"
+                        id="btnSTART" class="btn" data-btn="rect4170" data-code="0x13b"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0"
-                        d="m 640,99 1,70 228,2 1,-69 z"
-                        id="btnRT" class="btn"
+                        style="opacity:0.50199998;fill:#e60000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                        d="m 647,76 0,89 58.92404,-19.41217 57.84443,-2.10745 L 881,195 877,79 Z"
+                        id="btnRT" class="btn" data-btn="path4853" data-code="0x137"
                         inkscape:connector-curvature="0" />
                 <path
-                        style="fill:#e60000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;enable-background:new;fill-opacity:1;opacity:0"
-                        d="m 385.00004,93.00116 1,70 227.99996,2 1,-69 z"
-                        id="btnLT" class="btn"
+                        style="opacity:0.50199998;fill:#e60003;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;enable-background:new"
+                        d="m 387.00004,80.00116 1,84 241.99996,-2 0,-85 z"
+                        id="btnLT" class="btn" data-btn="path4756" data-code="0x136"
                         inkscape:connector-curvature="0" />
+                <circle
+                        style="opacity:0.494;fill:#e60003;fill-opacity:1"
+                        id="dirCenter"
+                        cx="247.52744"
+                        cy="299.99194"
+                        r="0.25" />
             </g>
             <g
                     inkscape:groupmode="layer"

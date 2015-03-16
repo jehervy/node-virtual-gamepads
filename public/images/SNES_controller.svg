@@ -9,7 +9,7 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 1000 600"
+   viewBox="80 100 850 400"
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.46"
@@ -746,7 +746,7 @@
        transform="matrix(1.1486534,0,0,1.1486534,52.05556,-44.596021)" />
     <path
        sodipodi:type="arc"
-       style="fill:#777f82;fill-opacity:1;stroke:url(#radialGradient4723);stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#777f82;fill-opacity:1;stroke:url(#radialGradient4723);stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path3214"
        sodipodi:cx="621"
        sodipodi:cy="301"

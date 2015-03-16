@@ -1,0 +1,44 @@
+body {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+    font-family: Verdana, Geneva, sans-serif;
+}
+td {
+    text-align: center;
+}
+#dirContainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 35%;
+}
+#slotIndicatorContainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    pointer-events: none;
+}
+#tableIndicator {
+    width: 50px;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+.indicator {
+    width: 5px;
+    height: 10px;
+    background-color: black;
+    margin: 2px;
+    box-shadow: 1px 1px 1px 1px #aaa;
+}
+.indicatorSelected {
+    background-color: red;
+}
+.btnSelected{
+    stroke: black !important;
+    stroke-width: 5 !important;
+}
