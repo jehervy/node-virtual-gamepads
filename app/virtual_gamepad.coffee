@@ -30,26 +30,26 @@ class virtual_gamepad
             error err
           else
             # Init buttons
-            ioctl.ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_KEY
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_A
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_B
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_X
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_Y
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_TL
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_TR
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_START
-            ioctl.ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_SELECT
+            ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_KEY
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_A
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_B
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_X
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_Y
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_TL
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_TR
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_START
+            ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_SELECT
             # Init directions
-            ioctl.ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_ABS
-            ioctl.ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_X
-            ioctl.ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_Y
+            ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_ABS
+            ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_X
+            ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_Y
 
-            ioctl.ioctl @fd, uinput.UI_DEV_CREATE, 0
+            ioctl @fd, uinput.UI_DEV_CREATE, 0
             callback()
 
   disconnect: (callback) ->
     if @fd
-      ioctl.ioctl @fd, uinput.UI_DEV_DESTROY, 0
+      ioctl @fd, uinput.UI_DEV_DESTROY, 0
       callback()
 
   sendEvent: (event) ->
