@@ -1,19 +1,19 @@
 ###
 Created by MIROOF on 04/03/2015
-vjoy application
+Virtual gamepad application
 ###
 
-uinput = require '../lib/uinput'
+uinput = require './lib/uinput'
 path = require('path')
 express = require('express')
 app  = express()
 http = require('http').Server(app)
 io = require('socket.io')(http)
 
-gamepad_hub = require './virtual_gamepad_hub'
+gamepad_hub = require './app/virtual_gamepad_hub'
 hub = new gamepad_hub()
 
-app.use( express.static( '../public' ) );
+app.use( express.static( 'public' ) );
 
 io.on 'connection', (socket) ->
 
