@@ -3,6 +3,10 @@
 This nodejs application provides the possibility to use your smarpthone (but also all device with a web browser) as a gamepad controller on Linux OS simply by reaching a local address.
 You can virtually plug up to four gamepad controllers.
 
+Demo
+----
+A video demo is available at [Video demonstration](https://www.youtube.com/watch?v=OWgWugNsF7w)
+
 Prerequisite
 ------------
 This application is only compatible with Linux OS with the **uinput** kernel module installed.
