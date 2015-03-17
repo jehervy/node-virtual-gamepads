@@ -5,7 +5,7 @@ You can virtually plug up to four gamepad controllers.
 
 Demo
 ----
-A video demo is available at [Video demonstration](https://www.youtube.com/watch?v=OWgWugNsF7w)
+A video demo is available [here](https://www.youtube.com/watch?v=OWgWugNsF7w)
 
 Prerequisite
 ------------
