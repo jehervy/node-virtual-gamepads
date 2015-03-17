@@ -89,16 +89,16 @@ $( window ).load(function() {
     socket.on("gamepadConnected", function(data) {
         slotNumber = data.padId;
 
-        $(".btn").off("mousedown touchstart mouseup touchend");
+        $(".btn").off("touchstart touchend");
         setDirection = function(){};
 
-        $(".btn").on("mousedown touchstart", function() {
+        $(".btn").on("touchstart", function() {
             btnId = $(this).data("btn");
             $("#"+btnId).attr("class", "btnSelected");
             socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 1});
         });
 
-        $(".btn").on("mouseup touchend", function() {
+        $(".btn").on("touchend", function() {
             btnId = $(this).data("btn");
             $("#"+btnId).attr("class", "");
             socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 0});
@@ -107,24 +107,24 @@ $( window ).load(function() {
         setDirection = function(direction) {
             switch (direction.direction) {
                 case "left" :
-                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: -32767});
-                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 0});
+                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 0});
+                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 127});
                     break;
                 case "right" :
-                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 32767});
-                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 0});
+                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 255});
+                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 127});
                     break;
                 case "up" :
-                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 0});
-                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: -32767});
+                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 127});
+                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 0});
                     break;
                 case "down" :
-                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 0});
-                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 32767});
+                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 127});
+                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 255});
                     break;
                 case "none" :
-                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 0});
-                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 0});
+                    socket.emit("padEvent", {type: 0x03, code: 0x00, value: 127});
+                    socket.emit("padEvent", {type: 0x03, code: 0x01, value: 127});
                     break;
                 default :
                     socket.emit("padEvent", {type: 0x03, code: 0x00, value: direction.x});
@@ -132,6 +132,8 @@ $( window ).load(function() {
                     break;
             }
         };
+
+        setDirection({direction: "none"});
 
     });
 

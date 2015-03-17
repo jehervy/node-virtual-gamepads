@@ -12,7 +12,7 @@ Installation
     git clone https://github.com/miroof/node-virtual-gamepads
     cd node-virtual-gamepads
     npm install
-    sudo node main.js
+    sudo node main.JS
 
 Usage
 -----

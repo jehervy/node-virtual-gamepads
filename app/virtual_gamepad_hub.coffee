@@ -29,7 +29,7 @@ class virtual_gamepad_hub
     else
       # Create and connect the gamepad
       @gamepads[padId] = new gamepad()
-      @gamepads[padId].connect padId, () ->
+      @gamepads[padId].connect () ->
         callback padId
       , (err) ->
         callback -1
