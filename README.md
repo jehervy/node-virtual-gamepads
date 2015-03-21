@@ -30,6 +30,9 @@ With the [add to homescreen](https://developer.chrome.com/multidevice/android/in
 you can easily use virtual gamepads application without launching the browser each time you want to play.
 Just follow these few steps:
 
-![Step 1](/../resources/screenshots/standalone_step1.png?raw=true =250x )
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step1.png?raw=true)
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step2.png?raw=true)
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step3.png?raw=true)
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step4.png?raw=true)
 
 ### Enjoy haptic feedbacks
