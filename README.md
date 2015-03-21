@@ -28,7 +28,6 @@ Features
 ### Use it as standalone application (chrome mobile)
 With the [add to homescreen](https://developer.chrome.com/multidevice/android/installtohomescreen),
 you can easily use virtual gamepads application without launching the browser each time you want to play.
-Just follow these few steps:
 
 ![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step1.png?raw=true)
 ![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step2.png?raw=true)
