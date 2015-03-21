@@ -21,3 +21,15 @@ Installation
 Usage
 -----
 Once the nodejs application is launched, you just have to plug your gamepad controller by connecting your device on the same local network and by reaching the address *http://node_server_adress*
+
+Features
+--------
+
+### Use it as standalone application (chrome mobile)
+With the [add to homescreen](https://developer.chrome.com/multidevice/android/installtohomescreen),
+you can easily use virtual gamepads application without launching the browser each time you want to play.
+Just follow these few steps:
+
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/Screenshot_2015-03-21-09-34-55.png?raw=true "Step 1")
+
+### Enjoy haptic feedbacks
