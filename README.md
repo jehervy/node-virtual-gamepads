@@ -1,6 +1,6 @@
 # node-virtual-gamepads
 
-This nodejs application provides the possibility to use your smarpthone(s) as a gamepad controller(s)
+This nodejs application provides the possibility to use your smarpthone as a gamepad controller
 on Linux OS simply by reaching a local address.
 You can virtually plug **up to 4** gamepad controllers.
 
@@ -26,6 +26,11 @@ by connecting your device on the same local network and by reaching the address 
 
 Features
 --------
+### Plug up to 4 virtual gamepads
+The application will plug automatically a new controller when the web application is launched and unplug it at disconnection.
+4 slots are available so 4 virtual gamepads can be created. You can see your current slot on the indicator directly on the vitual gamepad.
+
+![Virtual gamepad](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone.png?raw=true)
 
 ### Use it as standalone application (chrome mobile)
 With the [add to homescreen](https://developer.chrome.com/multidevice/android/installtohomescreen) chrome feature,
