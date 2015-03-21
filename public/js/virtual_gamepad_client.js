@@ -1,4 +1,6 @@
-// Initialize the joystick
+/***********************
+ INITIALIZE THE JOYSTICK
+ **********************/
 var setDirection = function() {};
 var initJoystick = function () {
     var dirCursor = document.getElementById("dirCenter");
@@ -19,6 +21,9 @@ var initJoystick = function () {
 
     var lastDirection = "none";
     setInterval(function(){
+        /************
+        JOYSTICK MODE
+         ***********/
         /*
         if (joystick.left() || joystick.right() | joystick.up() || joystick.down()) {
             lastDirection = "dir";
@@ -28,6 +33,9 @@ var initJoystick = function () {
             setDirection({x: 0, y: 0});
         }
         */
+        /************
+         DIRECTIONAL PAD MODE
+         ***********/
         if(joystick.left()) {
             if (lastDirection != "left") {
                 lastDirection = "left";
@@ -56,7 +64,9 @@ var initJoystick = function () {
     }, 1/30 * 1000);
 };
 
-// Initialize the slot number indicator
+/*************************
+ INITIALIZE SLOT INDICATOR
+ ************************/
 var indicatorOn;
 var slotNumber;
 var initSlotIndicator = function () {
@@ -78,8 +88,19 @@ var initSlotIndicator = function () {
     slotAnimationLoop();
 }
 
+/**********************
+ HAPTIC CALLBACK METHOD
+ *********************/
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+var hapticCallback = function () {
+    if (navigator.vibrate) {
+        navigator.vibrate(1);
+    }
+}
 
-// Main entry point
+/****************
+ MAIN ENTRY POINT
+ ***************/
 $( window ).load(function() {
     initJoystick();
     initSlotIndicator();
@@ -96,12 +117,14 @@ $( window ).load(function() {
             btnId = $(this).data("btn");
             $("#"+btnId).attr("class", "btnSelected");
             socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 1});
+            hapticCallback();
         });
 
         $(".btn").on("touchend", function() {
             btnId = $(this).data("btn");
             $("#"+btnId).attr("class", "");
             socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 0});
+            //hapticCallback();
         });
 
         setDirection = function(direction) {
