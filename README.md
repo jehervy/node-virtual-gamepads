@@ -6,7 +6,8 @@ You can virtually plug **up to 4** gamepad controllers.
 
 Demo
 ----
-A video demo is available [here](https://www.youtube.com/watch?v=OWgWugNsF7w)
+Demo video 1 player in game [here](https://www.youtube.com/watch?v=OWgWugNsF7w)
+Demo video 3 players on EmulStation [here](https://www.youtube.com/watch?v=HQROnYLRyOw)
 
 Prerequisite
 ------------
