@@ -42,5 +42,13 @@ Then a shortcut is added on your homescreen and the application will be launched
 ![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/standalone_step4.png?raw=true)
 
 ### Enjoy haptic feedbacks
+Because it's difficult to spot the right place in a touch screen without looking at it,
+the touch zone of each button was increased. LT button was moved at the center of the screen
+to let as much space as possible for the joystick and avoid touch mistakes.
 
-![Step 1](http://upload.wikimedia.org/wikipedia/commons/b/b8/GravitationalWave_CrossPolarization.gif)
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/schemas/touch_zones.png?raw=true)
+
+To know if we pressed a button with success, the web application provide an haptic feedback
+which can be easily deactivated by turning off the vibrations of the phone.
+
+![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/schemas/haptic.gif?raw=true)
