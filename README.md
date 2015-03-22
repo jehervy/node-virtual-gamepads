@@ -55,5 +55,5 @@ to let as much space as possible for the joystick and avoid touch mistakes.
 
 ![Step 1](https://github.com/miroof/node-virtual-gamepads/blob/resources/schemas/touch_zones.png?raw=true)
 
-To know if we pressed a button with success, the web application provide an haptic feedback
+To know if we pressed a button with success, the web application provides an haptic feedback
 which can be easily deactivated by turning off the vibrations of the phone.
