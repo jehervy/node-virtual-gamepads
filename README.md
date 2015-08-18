@@ -1,4 +1,4 @@
-# node-virtual-gamepads
+# node-virtual-gamepads - Recalbox integration
 
 This nodejs application provides the possibility to use your smarpthone as a gamepad controller
 on Linux OS simply by reaching a local address.
