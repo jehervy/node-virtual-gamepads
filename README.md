@@ -21,6 +21,9 @@ Installation
     npm install
     sudo node main.js
 
+If you encounter problems while installing or running node-virtual-gamepads have
+a look at the [troubleshooting](TROUBLESHOOTING.md) page.
+
 Usage
 -----
 Once the nodejs application is launched, you just have to plug your gamepad controller
@@ -57,3 +60,20 @@ to let as much space as possible for the joystick and avoid touch mistakes.
 
 To know if we pressed a button with success, the web application provides an haptic feedback
 which can be easily deactivated by turning off the vibrations of the phone.
+
+Developing
+----------
+For developing you will also have to install coffeescript
+
+    sudo apt-get install coffeescript
+
+When you changed something in a coffeescript (e.g. main.coffee) run
+
+    coffee -c main.coffee
+
+This will compile main.coffee to main.js wich than can be run with node
+(see [Installation](README.md#installation))
+To compile all coffee files when ever they change run
+
+    coffee -cw .
+
