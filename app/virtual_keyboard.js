@@ -6,7 +6,7 @@ Virtual keyboard class
  */
 
 (function() {
-  var Struct, fs, ioctl, uinput, virtual_keyboard;
+  var Struct, TimeStruct, config, fs, ioctl, uinput, virtual_keyboard;
 
   fs = require('fs');
 
@@ -15,6 +15,18 @@ Virtual keyboard class
   uinput = require('../lib/uinput');
 
   Struct = require('struct');
+
+  config = require('../config.json');
+
+  if (!config.x64) {
+    TimeStruct = function() {
+      return Struct().word32Sle('tv_sec').word32Sle('tv_usec');
+    };
+  } else {
+    TimeStruct = function() {
+      return Struct().word64Sle('tv_sec').word64Sle('tv_usec');
+    };
+  }
 
   virtual_keyboard = (function() {
     function virtual_keyboard() {}
@@ -77,7 +89,7 @@ Virtual keyboard class
       var ev, ev_buffer, ev_end, ev_end_buffer, input_event, input_event_end;
       console.log(event);
       if (this.fd) {
-        input_event = Struct().struct('time', Struct().word64Sle('tv_sec').word64Sle('tv_usec')).word16Ule('type').word16Ule('code').word32Sle('value');
+        input_event = Struct().struct('time', TimeStruct()).word16Ule('type').word16Ule('code').word32Sle('value');
         input_event.allocate();
         ev_buffer = input_event.buffer();
         ev = input_event.fields;
@@ -86,7 +98,7 @@ Virtual keyboard class
         ev.value = event.value;
         ev.time.tv_sec = Math.round(Date.now() / 1000);
         ev.time.tv_usec = Math.round(Date.now() % 1000 * 1000);
-        input_event_end = Struct().struct('time', Struct().word64Sle('tv_sec').word64Sle('tv_usec')).word16Ule('type').word16Ule('code').word32Sle('value');
+        input_event_end = Struct().struct('time', TimeStruct()).word16Ule('type').word16Ule('code').word32Sle('value');
         input_event_end.allocate();
         ev_end_buffer = input_event_end.buffer();
         ev_end = input_event_end.fields;

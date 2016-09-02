@@ -7,6 +7,12 @@ fs = require 'fs'
 ioctl = require 'ioctl'
 uinput = require '../lib/uinput'
 Struct = require 'struct'
+config = require '../config.json'
+
+if not config.x64
+  TimeStruct = -> Struct().word32Sle('tv_sec').word32Sle('tv_usec')
+else
+  TimeStruct = -> Struct().word64Sle('tv_sec').word64Sle('tv_usec')
 
 class virtual_keyboard
 
@@ -75,7 +81,7 @@ class virtual_keyboard
     console.log(event)
     if @fd
       input_event = Struct()
-        .struct('time', Struct().word64Sle('tv_sec').word64Sle('tv_usec'))
+        .struct('time', TimeStruct())
         .word16Ule('type')
         .word16Ule('code')
         .word32Sle('value')
@@ -90,7 +96,7 @@ class virtual_keyboard
       ev.time.tv_usec = Math.round(Date.now() % 1000 * 1000)
 
       input_event_end = Struct()
-        .struct('time', Struct().word64Sle('tv_sec').word64Sle('tv_usec'))
+        .struct('time', TimeStruct())
         .word16Ule('type')
         .word16Ule('code')
         .word32Sle('value')
