@@ -50,6 +50,7 @@ td {
     stroke-width: 5 !important;
 }
 
+
 /***********************\
 |*** keyboard styles ***|
 \***********************/
@@ -59,6 +60,12 @@ svg#keyboard {
 
 svg#keyboard > g > g {
     cursor: pointer;
+}
+
+small.explain {
+    font-size: .7em;
+    color: #888;
+    line-height: 1em;
 }
 
 /********************\
