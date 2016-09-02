@@ -31,7 +31,10 @@ Virtual gamepad class
   virtual_gamepad = (function() {
     function virtual_gamepad() {}
 
-    virtual_gamepad.prototype.connect = function(callback, error) {
+    virtual_gamepad.prototype.connect = function(callback, error, retry) {
+      if (retry == null) {
+        retry = 0;
+      }
       return fs.open('/dev/uinput', 'w+', (function(_this) {
         return function(err, fd) {
           var buffer, input_id, uidev, uinput_user_dev;
@@ -70,19 +73,26 @@ Virtual gamepad class
             uidev.absfuzz[uinput.ABS_Y] = 0;
             uidev.absflat[uinput.ABS_Y] = 15;
             return fs.write(_this.fd, buffer, 0, buffer.length, null, function(err) {
+              var error1;
               if (err) {
-                console.error(err);
+                console.warn("Error on init gamepad write:\n", err);
                 return error(err);
               } else {
                 try {
                   ioctl(_this.fd, uinput.UI_DEV_CREATE);
                   return callback();
-                } catch (_error) {
-                  error = _error;
-                  console.error(error);
+                } catch (error1) {
+                  err = error1;
+                  console.error("Error on gamepad create dev:\n", err);
                   fs.close(_this.fd);
                   _this.fd = void 0;
-                  return _this.connect(callback, error);
+                  if (retry < 5) {
+                    console.info("Retry to create gamepad");
+                    return _this.connect(callback, error, retry + 1);
+                  } else {
+                    console.error("Gave up on creating device");
+                    return error(err);
+                  }
                 }
               }
             });
@@ -100,8 +110,8 @@ Virtual gamepad class
       }
     };
 
-    virtual_gamepad.prototype.sendEvent = function(event) {
-      var ev, ev_buffer, ev_end, ev_end_buffer, input_event, input_event_end;
+    virtual_gamepad.prototype.sendEvent = function(event, error) {
+      var err, error1, error2, ev, ev_buffer, ev_end, ev_end_buffer, input_event, input_event_end;
       if (this.fd) {
         input_event = Struct().struct('time', TimeStruct()).word16Ule('type').word16Ule('code').word32Sle('value');
         input_event.allocate();
@@ -121,8 +131,20 @@ Virtual gamepad class
         ev_end.value = 0;
         ev_end.time.tv_sec = Math.round(Date.now() / 1000);
         ev_end.time.tv_usec = Math.round(Date.now() % 1000 * 1000);
-        fs.writeSync(this.fd, ev_buffer, 0, ev_buffer.length, null);
-        return fs.writeSync(this.fd, ev_end_buffer, 0, ev_end_buffer.length, null);
+        try {
+          fs.writeSync(this.fd, ev_buffer, 0, ev_buffer.length, null);
+        } catch (error1) {
+          err = error1;
+          console.error("Error on writing ev_buffer");
+          throw err;
+        }
+        try {
+          return fs.writeSync(this.fd, ev_end_buffer, 0, ev_end_buffer.length, null);
+        } catch (error2) {
+          err = error2;
+          console.error("Error on writing ev_end_buffer");
+          throw err;
+        }
       }
     };
 
