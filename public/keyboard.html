@@ -1,34 +1,45 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual gamepad</title>
     <link rel="icon" type="image/png" href="/images/icons/favicon_32.png"/>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="images/icons/launcher-icon-4x.png">
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery.simplemodal.js"></script>
-    <script src="js/socket.io.js"></script>
-    <script src="js/virtual_keyboard_client.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
-<div id="settings-modal" class="modal">
-    <form id="settings-form">
-        <h1>Settings</h1>
-        <hr />
-        <label for="settings-layout">Keyboard layout</label>
-        <select id="settings-layout" name="settings-layout">
-            <!-- will be filled by js -->
-        </select>
-        <br />
-        <label for="settings-sticky">Sticky mod keys</label>
-        <input type="hidden" name="settings-sticky" value="no" />
-        <input type="checkbox" value="yes" id="settings-sticky" name="settings-sticky" />
-        <br />
-        <button value="save">Save</button>
-    </form>
+<div class="loader">Loading...</div>
+
+<div id="settings-modal" class="modal-wrapper closed">
+    <div class="modal">
+        <div class="close"></div>
+        <form id="settings-form">
+            <h1>Settings</h1>
+            <hr />
+            <div class="form-row">
+                <label for="settings-layout">Keyboard layout</label>
+                <select id="settings-layout" name="settings-layout">
+                    <!-- will be filled by js -->
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="settings-sticky">Sticky mod keys</label>
+                <input type="hidden" name="settings-sticky" value="no" />
+                <div class="nested">
+                    <label class="switch">
+                        <input type="checkbox" value="yes" id="settings-sticky" name="settings-sticky" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+            <br />
+            <button>Save</button>
+        </form>
+    </div>
+
 </div>
 
 <div id="keyboard-container"></div>
@@ -1315,7 +1326,9 @@
 
 -->
 
-
+<script src="js/jquery.js"></script>
+<script src="js/socket.io.js"></script>
+<script src="js/virtual_keyboard_client.js"></script>
 
 </body>
 </html>

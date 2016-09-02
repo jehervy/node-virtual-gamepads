@@ -56,7 +56,16 @@ function showInput(str) {
 }
 
 $(window).load(function () {
+    $('.loader').hide();
+
     $("#keyboardInput").focus();
+
+    $(".modal .close, .modal-wrapper").click(function (event) {
+        $(this).parents('.modal-wrapper').addBack('.modal-wrapper').addClass('closed');
+    });
+    $(".modal").click(function (event) {
+        event.stopPropagation();
+    });
 
     $("window").on('keydown', function (e) {
        $("#keyboardInput").keydown(e);
@@ -147,10 +156,7 @@ function setKeyboardBindings(socket) {
 
     $("svg#keyboard > g > g#settings").click(function () {
         // open settings dialog
-        $('#settings-modal').modal({
-            closeHTML: '<a href="#">X</a>',
-            overlayClose: true
-        });
+        $('#settings-modal').removeClass('closed');
     });
 
     // TODO: touch event support
@@ -183,10 +189,10 @@ function initLayoutOptions() {
 function initSettings() {
     initLayoutOptions();
     $('#settings-form').submit(function (event) {
+        $('#settings-modal').addClass('closed');
+        // TODO: do stuff
         event.preventDefault();
         event.stopPropagation();
-        // TODO: do stuff
-        $.modal.close();
     })
 }
 
@@ -201,7 +207,7 @@ $( window ).load(function() {
 
     init(function () {
         socket.on("keyboardConnected", function(data) {
-            boardId = data.boardId;
+            // var boardId = data.boardId;
 
             setKeyboardBindings(socket);
         });
