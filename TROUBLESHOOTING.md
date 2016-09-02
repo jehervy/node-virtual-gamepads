@@ -30,3 +30,12 @@ header-files (dev-packages) pre-installed. Try:
 
     sudo apt-get install libudev-dev
 
+another possible reason could be if you're running the server on a x64 machine.
+If so please open the config.json in the root of the project and change
+
+    "x64": false
+
+to
+
+    "x64": true
+
