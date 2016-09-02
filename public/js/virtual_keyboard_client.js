@@ -56,8 +56,6 @@ function showInput(str) {
 }
 
 $(window).load(function () {
-    $('.loader').hide();
-
     $("#keyboardInput").focus();
 
     $(".modal .close, .modal-wrapper").click(function (event) {
@@ -206,6 +204,7 @@ $( window ).load(function() {
     var socket = io();
 
     init(function () {
+        $('.loader').hide();
         socket.on("keyboardConnected", function(data) {
             // var boardId = data.boardId;
 

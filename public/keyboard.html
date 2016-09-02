@@ -42,6 +42,21 @@
                     </small>
                 </div>
             </div>
+            <div class="form-row">
+                <label for="settings-physical">Physical keyboard</label>
+                <input type="hidden" name="settings-physical" value="no" />
+                <div class="nested">
+                    <label class="switch">
+                        <input type="checkbox" value="yes" id="settings-physical" name="settings-physical" />
+                        <div class="slider round"></div>
+                    </label>
+                    <br />
+                    <small class="explain">
+                        Capture input of physical keyboard. <br />
+                        WARNING: This will overwrite browser hot keys (e.g. F5 for reload).
+                    </small>
+                </div>
+            </div>
             <br />
             <button>Save</button>
         </form>
