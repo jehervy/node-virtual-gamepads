@@ -22,16 +22,16 @@
             <hr />
             <div class="form-row">
                 <label for="settings-layout">Keyboard layout</label>
-                <select id="settings-layout" name="settings-layout">
+                <select id="settings-layout" name="keyboardLayout">
                     <!-- will be filled by js -->
                 </select>
             </div>
             <div class="form-row">
                 <label for="settings-sticky">Sticky mod keys</label>
-                <input type="hidden" name="settings-sticky" value="no" />
+                <input type="hidden" name="stickyModKeys" value="false" />
                 <div class="nested">
                     <label class="switch">
-                        <input type="checkbox" value="yes" id="settings-sticky" name="settings-sticky" />
+                        <input type="checkbox" value="true" id="settings-sticky" name="stickyModKeys" />
                         <div class="slider round"></div>
                     </label>
                     <br />
@@ -45,10 +45,10 @@
             </div>
             <div class="form-row">
                 <label for="settings-physical">Physical keyboard</label>
-                <input type="hidden" name="settings-physical" value="no" />
+                <input type="hidden" name="physicalKeyboard" value="false" />
                 <div class="nested">
                     <label class="switch">
-                        <input type="checkbox" value="yes" id="settings-physical" name="settings-physical" />
+                        <input type="checkbox" value="true" id="settings-physical" name="physicalKeyboard" />
                         <div class="slider round"></div>
                     </label>
                     <br />

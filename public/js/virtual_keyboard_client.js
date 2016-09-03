@@ -3,10 +3,7 @@
  */
 
 require(["common"], function(common) {
-    require(["jquery", "socketio"], function ($, io) {
-        console.info($, io);
-        var KEYBOARDS_PATH = '/images/keyboards/';
-        var ALL_KEYBOARDS = {'en-US': 'en-US.svg'};
+    require(["jquery", "socketio", "keyboard/settings"], function ($, io, settings) {
 
         //http://wowmotty.blogspot.de/2009/06/convert-jquery-rgb-output-to-hex-color.html
         function rgb2hex(orig){
@@ -59,17 +56,10 @@ require(["common"], function(common) {
         }
 
 
-        function getDefaultLayout() {
-            //if not in settings
-            return Object.keys(ALL_KEYBOARDS)[0];
-            //else get it from settings
-        }
-
-        function setKeyboardLayout(layout, cb) {
-            if (layout == null) layout = getDefaultLayout();
-            var fn = ALL_KEYBOARDS[layout];
+        function loadKeyboardLayout(layout, cb) {
+            var fn = settings.ALL_KEYBOARDS[layout];
             if (fn == null) throw 'unknown layout: '+layout;
-            fn = KEYBOARDS_PATH+fn;
+            fn = settings.KEYBOARDS_PATH+fn;
             var div = $('#keyboard-container');
             $.get(fn, function (data) {
                 var svg = $(data.rootElement);
@@ -129,26 +119,47 @@ require(["common"], function(common) {
             });
         }
 
-        function initLayoutOptions() {
-            for (var i in ALL_KEYBOARDS) {
-                $('#settings-layout').append(
-                    '<option value="' + i + '">' + i + '</option>'
-                );
+        function initDialog() {
+            for (var i in settings.ALL_KEYBOARDS) {
+                if (settings.keyboardLayout == i) {
+                    $('#settings-layout').append(
+                        '<option value="' + i + '" selected>' + i + '</option>'
+                    );
+                } else {
+                    $('#settings-layout').append(
+                        '<option value="' + i + '">' + i + '</option>'
+                    );
+                }
             }
+            $('#settings-sticky').prop('checked', settings.stickyModKeys);
+            $('#settings-physical').prop('checked', settings.physicalKeyboard);
         }
 
         function initSettings() {
-            initLayoutOptions();
+            initDialog();
             $('#settings-form').submit(function (event) {
+                var formData = {};
+                $(this).find(':input').each(function (i, e) {
+                    e = $(e);
+                    var name = e.attr('name');
+                    if (name == null) return;
+                    var val;
+                    if (e.attr('type') == 'checkbox') {
+                        val = e.prop('checked');
+                    } else {
+                        val = e.val();
+                    }
+                    formData[name] = val;
+                });
+                settings.update(formData);
                 $('#settings-modal').addClass('closed');
-                // TODO: do stuff
                 event.preventDefault();
                 event.stopPropagation();
             })
         }
 
         function init(cb) {
-            setKeyboardLayout(null, cb);
+            loadKeyboardLayout(settings.keyboardLayout, cb);
             initSettings();
         }
 
