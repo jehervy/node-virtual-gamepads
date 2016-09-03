@@ -74,34 +74,17 @@ require(["common"], function(common) {
         var clicked = [];
 
         function setKeyboardBindings(socket) {
-            var idToColor = {};
-
-            $("svg#keyboard > g > g").hover(function () {
-                // hover in
-                var path = $(this).find("> path:first-child");
-                idToColor[path.attr('id')] = path.css('fill');
-                //path.css('fill', lightenDarkenColor(rgb2hex(path.css('fill')), -10));
-                if ($(this).attr("id") != "settings") {
-                    path.css('fill', "rgb(215, 250, 255)");
-                } else {
-                    path.css('fill', "rgb(0, 125, 141)");
-                }
-            }, function () {
-                // hover out
-                var path = $(this).find("> path:first-child");
-                //path.css('fill', lightenDarkenColor(rgb2hex(path.css('fill')), 10));
-                path.css('fill', idToColor[path.attr("id")]);
-            });
-            // TODO: color change for click as well
-
-
-            $("svg#keyboard > g > g#settings").click(function () {
+            $("svg#keyboard > g > g#settings").on("mousedown touchstart", function () {
+                $(this).attr('class', 'active');
                 // open settings dialog
                 $('#settings-modal').removeClass('closed');
+            }).on("mouseleave mouseup touchend", function (event) {
+                $(this).removeAttr('class');
             });
 
             $("svg#keyboard > g > g:not(#settings)").on("mousedown touchstart", function (event) {
                 event.preventDefault();
+                $(this).attr('class', 'active');
                 var keyCode = parseInt($(this).attr('id'));
                 console.info("Press", keyCode);
                 socket.emit("boardEvent", {type: 0x01, code: keyCode, value: 1});
@@ -109,7 +92,7 @@ require(["common"], function(common) {
                     clicked.push(keyCode)
                 }
             }).on("mouseleave mouseup touchend", function (event) {
-                event.preventDefault();
+                $(this).removeAttr('class');
                 var keyCode = parseInt($(this).attr('id'));
                 var idx = $.inArray(keyCode, clicked);
                 if (idx >= 0) {

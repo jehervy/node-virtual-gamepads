@@ -62,6 +62,10 @@ svg#keyboard > g > g {
     cursor: pointer;
 }
 
+svg#keyboard > g > g.active > path:first-child {
+    fill: rgb(255, 251, 175) !important;
+}
+
 small.explain {
     font-size: .7em;
     color: #888;
