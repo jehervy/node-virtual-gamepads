@@ -100,15 +100,16 @@ require(["common"], function(common) {
                 $('#settings-modal').removeClass('closed');
             });
 
-            // TODO: touch event support
-            $("svg#keyboard > g > g:not(#settings)").on("mousedown", function () {
+            $("svg#keyboard > g > g:not(#settings)").on("mousedown touchstart", function (event) {
+                event.preventDefault();
                 var keyCode = parseInt($(this).attr('id'));
                 console.info("Press", keyCode);
                 socket.emit("boardEvent", {type: 0x01, code: keyCode, value: 1});
                 if ($.inArray(keyCode, clicked) < 0) {
                     clicked.push(keyCode)
                 }
-            }).on("mouseleave mouseup", function () {
+            }).on("mouseleave mouseup touchend", function (event) {
+                event.preventDefault();
                 var keyCode = parseInt($(this).attr('id'));
                 var idx = $.inArray(keyCode, clicked);
                 if (idx >= 0) {
