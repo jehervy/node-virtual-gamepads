@@ -57,6 +57,7 @@ class virtual_gamepad
 
         uinput_user_dev.allocate()
         buffer = uinput_user_dev.buffer()
+        buffer.fill(0)
 
         uidev = uinput_user_dev.fields
 
