@@ -2,6 +2,80 @@ define(function () {
 
     var settings = {};
 
+    /*
+     * Settings modal stuff
+     */
+
+    settings.modal = {};
+    settings.modal.isOpen = false;
+
+    // initialize settings modal
+    require(["lib/domReady", "jquery"], function (domReady, $) {
+        var settingsModal = $("#settings-modal");
+
+        settings.modal.open = function () {
+            settingsModal.removeClass('closed');
+            settings.modal.isOpen = true;
+        };
+        settings.modal.close = function () {
+            settingsModal.addClass('closed');
+            settings.modal.isOpen = false;
+        };
+
+        function initDialog() {
+            for (var i in settings.ALL_KEYBOARDS) {
+                if (settings.keyboardLayout == i) {
+                    $('#settings-layout').append(
+                        '<option value="' + i + '" selected>' + i + '</option>'
+                    );
+                } else {
+                    $('#settings-layout').append(
+                        '<option value="' + i + '">' + i + '</option>'
+                    );
+                }
+            }
+            $('#settings-sticky').prop('checked', settings.stickyModKeys);
+        }
+
+        function bindSubmit() {
+            $('#settings-form').submit(function (event) {
+                var formData = {};
+                $(this).find(':input').each(function (i, e) {
+                    e = $(e);
+                    var name = e.attr('name');
+                    if (name == null) return;
+                    var val;
+                    if (e.attr('type') == 'checkbox') {
+                        val = e.prop('checked');
+                    } else {
+                        val = e.val();
+                    }
+                    formData[name] = val;
+                });
+                settings.update(formData);
+                settingsModal.modal.close();
+                event.preventDefault();
+                event.stopPropagation();
+            })
+        }
+
+        function bindClose() {
+            settingsModal.find(".close").addBack().click(function (event) {
+                settings.modal.close();
+            });
+            $(".modal").click(function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        initDialog();
+        bindClose();
+        bindSubmit();
+    });
+
+    /*
+     * Rest of the settings
+     */
     settings.KEYBOARDS_PATH = '/images/keyboards/';
     settings.ALL_KEYBOARDS = {'en-US': 'en-US.svg'};
 
@@ -10,17 +84,14 @@ define(function () {
 
     settings.keyboardLayout = null;
     settings.stickyModKeys = null;
-    settings.physicalKeyboard = null;
 
     settings.update = function(update) {
         if (update.hasOwnProperty('keyboardLayout')) settings.keyboardLayout = update.keyboardLayout;
         if (update.hasOwnProperty('stickyModKeys')) settings.stickyModKeys = update.stickyModKeys;
-        if (update.hasOwnProperty('physicalKeyboard')) settings.physicalKeyboard = update.physicalKeyboard;
         if (localStorageAvailable) {
             window.localStorage.setItem('keyboardSettings', JSON.stringify({
                 keyboardLayout: settings.keyboardLayout,
                 stickyModKeys: settings.stickyModKeys,
-                physicalKeyboard: settings.physicalKeyboard
             }));
         }
     };
@@ -51,13 +122,11 @@ define(function () {
             return {
                 keyboardLayout: keyboardLayout,
                 stickyModKeys: false,
-                physicalKeyboard: false
             }
         } else {
             return {
                 keyboardLayout: keyboardLayout,
                 stickyModKeys: true,
-                physicalKeyboard: true
             }
         }
     }
@@ -75,7 +144,6 @@ define(function () {
             console.error('localStorage not available. Settings can\'t be stored.')
         }
     }
-
 
     init();
 

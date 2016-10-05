@@ -953,7 +953,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="42">
+       id="m42">
       <path
          d="m 0,180 135,0 0,60 -135,0 0,-60 z"
          id="rect2322"
@@ -1085,7 +1085,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="54">
+       id="m54">
       <path
          d="m 735,180 165,0 0,60 -165,0 0,-60 z"
          id="rect2348"
@@ -1138,7 +1138,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="29">
+       id="m29">
       <path
          d="m 0,240 90,0 0,60 -90,0 0,-60 z"
          id="rect2350"
@@ -1150,7 +1150,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="125">
+       id="m125">
       <path
          d="m 90,240 60,0 0,60 -60,0 0,-60 z"
          id="rect2364"
@@ -1162,7 +1162,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="56">
+       id="m56">
       <path
          d="m 150,240 90,0 0,60 -90,0 0,-60 z"
          id="rect2354"
@@ -1182,7 +1182,7 @@
     </g>
     <g
        transform="translate(0.5,-1)"
-       id="100">
+       id="m100">
       <path
          d="m 600.5,240.5 90,0 0,60 -90,0 0,-60 z"
          id="rect2360"
@@ -1194,7 +1194,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="126">
+       id="m126">
       <path
          d="m 690,240 60,0 0,60 -60,0 0,-60 z"
          id="rect2366"
@@ -1218,7 +1218,7 @@
     </g>
     <g
        transform="translate(0.5,-0.5)"
-       id="97">
+       id="m97">
       <path
          d="m 810,240 90,0 0,60 -90,0 0,-60 z"
          id="rect2352"

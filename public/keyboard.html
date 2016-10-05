@@ -22,9 +22,15 @@
             <hr />
             <div class="form-row">
                 <label for="settings-layout">Keyboard layout</label>
-                <select id="settings-layout" name="keyboardLayout">
-                    <!-- will be filled by js -->
-                </select>
+                <div class="nested">
+                    <select id="settings-layout" name="keyboardLayout">
+                        <!-- will be filled by js -->
+                    </select>
+                    <br />
+                    <small class="explain">
+                        This must be eqequal to the the keyboard layout set on the host.
+                    </small>
+                </div>
             </div>
             <div class="form-row">
                 <label for="settings-sticky">Sticky mod keys</label>
@@ -40,21 +46,6 @@
                         It will keep modifier keys (e.g. ctrl) pressed
                         until the next non-modifier key or the same modifier
                         key is clicked again.
-                    </small>
-                </div>
-            </div>
-            <div class="form-row">
-                <label for="settings-physical">Physical keyboard</label>
-                <input type="hidden" name="physicalKeyboard" value="false" />
-                <div class="nested">
-                    <label class="switch">
-                        <input type="checkbox" value="true" id="settings-physical" name="physicalKeyboard" />
-                        <div class="slider round"></div>
-                    </label>
-                    <br />
-                    <small class="explain">
-                        Capture input of physical keyboard. <br />
-                        WARNING: This will overwrite browser hot keys (e.g. F5 for reload).
                     </small>
                 </div>
             </div>
