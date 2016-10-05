@@ -47,7 +47,7 @@ define(["jquery", "./utils", "./settings"], function ($, util, settings) {
                     console.info("Released click", keyCode);
                     $(this).removeAttr('class');
                     if (cb != null) cb({type: 0x01, code: keyCode, value: 0, hardware: false});
-                    for (var key in activeModKeys) {
+                    for (key in activeModKeys) {
                         var code = parseInt(key);
                         activeModKeys[key][1].removeAttr('class');
                         delete activeModKeys[key];

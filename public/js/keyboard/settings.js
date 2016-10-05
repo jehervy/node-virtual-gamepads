@@ -1,5 +1,9 @@
 define(function () {
 
+    var ALL_KEYBOARDS = {
+        'en-US': 'en-US.svg'
+    };
+
     var settings = {};
 
     /*
@@ -77,7 +81,7 @@ define(function () {
      * Rest of the settings
      */
     settings.KEYBOARDS_PATH = '/images/keyboards/';
-    settings.ALL_KEYBOARDS = {'en-US': 'en-US.svg'};
+    settings.ALL_KEYBOARDS = ALL_KEYBOARDS;
 
 
     var localStorageAvailable = (typeof(Storage) !== "undefined");
