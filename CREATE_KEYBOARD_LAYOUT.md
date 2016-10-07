@@ -1,18 +1,18 @@
-Creating a new keyboard layout
+Creating a new Keyboard Layout
 ==============================
 This document will first explain a the process of creating a new keyboard layout
 in a technical way. After that an example on how to do that with Inkscape
 (a free vector graphic editing software) is given.
 
 
-Technical view
+Technical View
 --------------
-### SVG structure ###
+### SVG Structure ###
 A keyboard layout is an svg file that contains one group that represents the
 whole keyboard. Inside that group you may place as many groups as wanted
 representing keys but no further groups.
 
-### IDs of key groups ###
+### IDs of Key Groups ###
 Each key group must have an id that
 represents the keyCode (see below on how to get them). If the key is a modifier
 key (e.g. Ctrl) prepend 'm' in front of the keyCode (e.g. m100). Modifier keys
@@ -61,7 +61,11 @@ Assumption: You have forked and cloned the repository.
   * Make sure each key is a group:
     * Select all parts of key and hit Ctrl+G
   * Go through the key groups from top left to top right (as you would read)
-    * Click it and open object properties (Ctrl+Shift+O)
+    * Select it (by clicking)
+    * Press `End` key to lower the group to the bottom.
+      This will bring the keys in a proper order an will make any
+      debugging in the future much easier.
+    * Open object properties (Ctrl+Shift+O)
     * Edit the id field according to the instructions above under
       ["Technical View" > "IDs of key groups"](#ids-of-key-groups)
   * Select the whole keyboard and group it (Ctrl+G again)
