@@ -1,14 +1,16 @@
 body {
     -moz-user-select: none;
     -webkit-user-select: none;
-    -ms-user-select:none;
-    user-select:none;
-    -o-user-select:none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
     font-family: Verdana, Geneva, sans-serif;
 }
+
 td {
     text-align: center;
 }
+
 #dirContainer {
     position: absolute;
     top: 0px;
@@ -16,6 +18,7 @@ td {
     height: 100%;
     width: 35%;
 }
+
 #slotIndicatorContainer {
     position: absolute;
     top: 0px;
@@ -23,11 +26,13 @@ td {
     width: 100%;
     pointer-events: none;
 }
+
 #tableIndicator {
     width: 50px;
     margin: 0 auto;
     margin-top: 10%;
 }
+
 .indicator {
     width: 5px;
     height: 10px;
@@ -35,10 +40,302 @@ td {
     margin: 2px;
     box-shadow: 1px 1px 1px 1px #aaa;
 }
+
 .indicatorSelected {
     background-color: red;
 }
-.btnSelected{
+
+.btnSelected {
     stroke: black !important;
     stroke-width: 5 !important;
+}
+
+
+/***********************\
+|*** keyboard styles ***|
+\***********************/
+svg#keyboard {
+    width: 100%;
+}
+
+svg#keyboard > g > g {
+    cursor: pointer;
+}
+
+svg#keyboard > g > g.active > path:first-child {
+    fill: rgb(255, 251, 175) !important;
+}
+
+small.explain {
+    font-size: .7em;
+    color: #888;
+    line-height: 1em;
+}
+
+/********************\
+|*** form styling ***|
+\********************/
+form .form-row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    line-height: 1.5em;
+    font-size: 1.2em;
+}
+
+form .form-row > label {
+    flex: 2;
+    justify-content: flex-start;
+}
+
+form .form-row > input /*:not([type="checkbox"])*/,
+form .form-row > select,
+form .form-row > .nested {
+    flex: 3;
+}
+
+form .form-row > .nested > select {
+    width: 100%;
+    padding: 0.3em;
+    margin-bottom: 0.4em;
+}
+
+@media (max-width: 550px) {
+    form .form-row {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    form .form-row > * {
+        line-height: 1.5em;
+        font-size: 1.2em;
+    }
+
+    form .form-row > label {
+        flex: initial;
+        width: 100%;
+    }
+
+    form .form-row > input /*:not([type="checkbox"])*/,
+    form .form-row > select,
+    form .form-row > .nested {
+        flex: initial;
+        width: 100%;
+    }
+}
+
+form button,
+form input[type="button"] {
+    cursor: pointer;
+    background: #c7c7c7;
+    background-image: -webkit-linear-gradient(top, #c7c7c7, #7a7a7a);
+    background-image: -moz-linear-gradient(top, #c7c7c7, #7a7a7a);
+    background-image: -ms-linear-gradient(top, #c7c7c7, #7a7a7a);
+    background-image: -o-linear-gradient(top, #c7c7c7, #7a7a7a);
+    background-image: linear-gradient(to bottom, #c7c7c7, #7a7a7a);
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    border: solid #7a7a7a 1px;
+    text-decoration: none;
+}
+
+form button:hover,
+form input:hover[type="button"] {
+    background: #7a7a7a;
+    background-image: -webkit-linear-gradient(top, #7a7a7a, #c7c7c7);
+    background-image: -moz-linear-gradient(top, #7a7a7a, #c7c7c7);
+    background-image: -ms-linear-gradient(top, #7a7a7a, #c7c7c7);
+    background-image: -o-linear-gradient(top, #7a7a7a, #c7c7c7);
+    background-image: linear-gradient(to bottom, #7a7a7a, #c7c7c7);
+    text-decoration: none;
+}
+
+/*********************\
+|*** modal styling ***|
+\*********************/
+.modal {
+    width: 500px;
+    color: #bbb;
+    background-color: #333;
+    border: 4px solid #444;
+    padding: 12px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    max-height: 100vh;
+}
+
+.modal > .close {
+    cursor: pointer;
+    float: right;
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+}
+
+.modal > .close:after, .modal > .close:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    background: #f00;
+    height: 6px;
+    margin-top: -3px;
+}
+
+.modal > .close:before {
+    transform: rotate(45deg);
+}
+
+.modal > .close:after {
+    transform: rotate(-45deg);
+}
+
+.modal-wrapper.closed {
+    top: 50%;
+    bottom: 50%;
+    left: 50%;
+    right: 50%;
+    overflow: hidden;
+}
+
+.modal-wrapper {
+    /*display: none;*/
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .3);
+    z-index: 9001; /* it's over 9000!!! */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: top .3s, left .3s, right .3s, bottom .3s;
+}
+
+@media (max-width: 550px) {
+    .modal-wrapper {
+        align-items: flex-end;
+    }
+
+    .modal {
+        width: 100%;
+    }
+}
+
+/**********************************************************************\
+|*** loading spinner as of http://projects.lukehaas.me/css-loaders/ ***|
+\**********************************************************************/
+
+.loader {
+    margin: 60px auto;
+    font-size: 10px;
+    position: relative;
+    text-indent: -9999em;
+    border: 1.1em solid rgba(71, 129, 255, 0.2);
+    border-left-color: rgba(71, 129, 255, 1);
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+}
+
+.loader,
+.loader:after {
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+}
+
+@-webkit-keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+/*************************************************************************\
+|***  switch as of http://www.w3schools.com/howto/howto_css_switch.asp ***|
+\*************************************************************************/
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    display: none;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

@@ -71,9 +71,11 @@ When you changed something in a coffeescript (e.g. main.coffee) run
 
     coffee -c main.coffee
 
-This will compile main.coffee to main.js wich than can be run with node
+This will compile main.coffee to main.js which than can be run with node
 (see [Installation](README.md#installation))
 To compile all coffee files when ever they change run
 
     coffee -cw .
+
+If you want do add a new keyboard layout please refer to [this file](CREATE_KEYBOARD_LAYOUT.md).
 
