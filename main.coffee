@@ -61,8 +61,8 @@ io.on 'connection', (socket) ->
 http.on 'error', (err) ->
   switch err.message
     when "listen EACCES"
-      console.error "You dont have permissions to open port", config.port,
-        "For ports smaller than 1024, you need root previleges."
+      console.error "You don't have permissions to open port", config.port,
+        "For ports smaller than 1024, you need root privileges."
   throw err
 
 http.listen config.port, () ->
