@@ -72,6 +72,14 @@ small.explain {
     line-height: 1em;
 }
 
+a {
+    color: #2196F3;
+}
+
+a:active {
+    color: #1970b8;
+}
+
 /********************\
 |*** form styling ***|
 \********************/
@@ -155,6 +163,20 @@ form input:hover[type="button"] {
 /*********************\
 |*** modal styling ***|
 \*********************/
+.modal .credits h1,
+.modal .credits h2,
+.modal .credits h3,
+.modal .credits h4,
+.modal .credits h5,
+.modal .credits h6 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.modal .credits > :last-child {
+    margin-bottom: 15px;
+    display: block;
+}
+
 .modal {
     width: 500px;
     color: #bbb;
