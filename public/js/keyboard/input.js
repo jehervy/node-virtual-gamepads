@@ -1,10 +1,18 @@
 define(["jquery", "./utils", "./settings"], function ($, util, settings) {
 
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    function hapticFeedback() {
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }
+
     var clickedKeys = [];
     var activeModKeys = {};
     function bindClickAndTouchEvents(cb, settingsCb) {
         $("svg#keyboard > g > g#settings").on("mousedown touchstart", function () {
             $(this).attr('class', 'active');
+            hapticFeedback();
             settingsCb();
             $('#settings-modal').removeClass('closed');
         }).on("mouseleave mouseup touchend", function (event) {
@@ -12,6 +20,7 @@ define(["jquery", "./utils", "./settings"], function ($, util, settings) {
         });
 
         $("svg#keyboard > g > g:not(#settings)").on("mousedown touchstart", function (event) {
+            hapticFeedback();
             event.preventDefault();
             $(this).attr('class', 'active');
             var key = util.parseKeyId($(this).attr('id'));
