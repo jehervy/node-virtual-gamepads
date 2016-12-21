@@ -94,9 +94,9 @@ var initSlotIndicator = function () {
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var hapticCallback = function () {
     if (navigator.vibrate) {
-        navigator.vibrate(1);
+        navigator.vibrate(50);
     }
-}
+};
 
 /****************
  MAIN ENTRY POINT
