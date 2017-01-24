@@ -65,5 +65,8 @@ http.on 'error', (err) ->
         "For ports smaller than 1024, you need root privileges."
   throw err
 
-http.listen config.port, () ->
-  console.info "Listening on #{config.port}"
+http.listen process.env.PORT || config.port, () ->
+  if process.env.PORT
+    console.info "Listening on #{process.env.PORT}"
+  else
+    console.info "Listening on #{config.port}"
