@@ -91,7 +91,7 @@ Virtual gamepad application
   });
 
   http.listen(config.port, function() {
-    return console.info("Listening on " + config.port);
+    return console.info("Listening on " + process.env.PORT || config.port);
   });
 
 }).call(this);
