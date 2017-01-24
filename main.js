@@ -90,7 +90,7 @@ Virtual gamepad application
     throw err;
   });
 
-  http.listen(config.port, function() {
+  http.listen(process.env.PORT || config.port, function() {
     return console.info("Listening on " + process.env.PORT || config.port);
   });
 
