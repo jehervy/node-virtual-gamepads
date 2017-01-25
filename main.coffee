@@ -14,6 +14,7 @@ gamepad_hub = require './app/virtual_gamepad_hub'
 gp_hub = new gamepad_hub()
 keyboard_hub = require './app/virtual_keyboard_hub'
 kb_hub = new keyboard_hub()
+port = process.env.PORT || config.port
 
 app.use(express.static(__dirname + '/public'));
 
@@ -65,8 +66,5 @@ http.on 'error', (err) ->
         "For ports smaller than 1024, you need root privileges."
   throw err
 
-http.listen process.env.PORT || config.port, () ->
-  if process.env.PORT
-    console.info "Listening on #{process.env.PORT}"
-  else
-    console.info "Listening on #{config.port}"
+http.listen port, () ->
+    console.info "Listening on #{port}"

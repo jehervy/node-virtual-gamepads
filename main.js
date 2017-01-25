@@ -6,7 +6,7 @@ Virtual gamepad application
  */
 
 (function() {
-  var app, config, express, gamepad_hub, gp_hub, http, io, kb_hub, keyboard_hub, path;
+  var app, config, express, gamepad_hub, gp_hub, http, io, kb_hub, keyboard_hub, path, port;
 
   path = require('path');
 
@@ -27,6 +27,8 @@ Virtual gamepad application
   keyboard_hub = require('./app/virtual_keyboard_hub');
 
   kb_hub = new keyboard_hub();
+
+  port = process.env.PORT || config.port;
 
   app.use(express["static"](__dirname + '/public'));
 
@@ -90,12 +92,8 @@ Virtual gamepad application
     throw err;
   });
 
-  http.listen(process.env.PORT || config.port, function() {
-    if (process.env.PORT) {
-      return console.info("Listening on " + process.env.PORT);
-    } else {
-      return console.info("Listening on " + config.port);
-    }
+  http.listen(port, function() {
+    return console.info("Listening on " + port);
   });
 
 }).call(this);
