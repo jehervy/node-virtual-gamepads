@@ -87,7 +87,7 @@ Virtual gamepad application
   http.on('error', function(err) {
     switch (err.message) {
       case "listen EACCES":
-        console.error("You don't have permissions to open port", config.port, "For ports smaller than 1024, you need root privileges.");
+        console.error("You don't have permissions to open port", port, "For ports smaller than 1024, you need root privileges.");
     }
     throw err;
   });
