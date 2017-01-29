@@ -6,13 +6,9 @@ Virtual gamepad class
 fs = require 'fs'
 ioctl = require 'ioctl'
 uinput = require '../lib/uinput'
-Struct = require 'struct'
+uinputStructs = require '../lib/uinput_structs'
 config = require '../config.json'
 
-if not config.x64
-  TimeStruct = -> Struct().word32Sle('tv_sec').word32Sle('tv_usec')
-else
-  TimeStruct = -> Struct().word64Sle('tv_sec').word64Sle('tv_usec')
 
 class virtual_gamepad
 
@@ -40,28 +36,8 @@ class virtual_gamepad
         ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_X
         ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_Y
 
-        input_id = Struct()
-          .word16Sle('bustype')
-          .word16Sle('vendor')
-          .word16Sle('product')
-          .word16Sle('version')
-
-        uinput_user_dev = Struct()
-          .chars('name', uinput.UINPUT_MAX_NAME_SIZE)
-          .struct('id', input_id)
-          .word32Sle('ff_effects_max')
-          .array('absmax', uinput.ABS_CNT, 'word32Sle')
-          .array('absmin', uinput.ABS_CNT, 'word32Sle')
-          .array('absfuzz', uinput.ABS_CNT, 'word32Sle')
-          .array('absflat', uinput.ABS_CNT, 'word32Sle');
-
-        uinput_user_dev.allocate()
-        buffer = uinput_user_dev.buffer()
-        buffer.fill(0)
-
-        uidev = uinput_user_dev.fields
-
-        uidev.name = "Virtual gamepad"
+        uidev = new uinputStructs.uinput_user_dev
+        uidev.name = Array.from("Virtual gamepad")
         uidev.id.bustype = uinput.BUS_USB
         uidev.id.vendor = 0x3
         uidev.id.product = 0x3
@@ -77,7 +53,9 @@ class virtual_gamepad
         uidev.absfuzz[uinput.ABS_Y] = 0
         uidev.absflat[uinput.ABS_Y] = 15
 
-        fs.write @fd, buffer, 0, buffer.length, null, (err) =>
+        uidev_buffer = uidev.ref()
+
+        fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
             console.warn "Error on init gamepad write:\n", err
             error err
@@ -105,35 +83,21 @@ class virtual_gamepad
 
   sendEvent: (event, error) ->
     if @fd
-      input_event = Struct()
-        .struct('time', TimeStruct())
-        .word16Ule('type')
-        .word16Ule('code')
-        .word32Sle('value')
-      input_event.allocate()
-      ev_buffer = input_event.buffer()
-      ev = input_event.fields
-
+      ev = new uinputStructs.input_event
       ev.type = event.type
       ev.code = event.code
       ev.value = event.value
       ev.time.tv_sec = Math.round(Date.now() / 1000)
       ev.time.tv_usec = Math.round(Date.now() % 1000 * 1000)
+      ev_buffer = ev.ref()
 
-      input_event_end = Struct()
-        .struct('time', TimeStruct())
-        .word16Ule('type')
-        .word16Ule('code')
-        .word32Sle('value')
-      input_event_end.allocate()
-      ev_end_buffer = input_event_end.buffer()
-      ev_end = input_event_end.fields
-
+      ev_end = new uinputStructs.input_event
       ev_end.type = 0
       ev_end.code = 0
       ev_end.value = 0
       ev_end.time.tv_sec = Math.round(Date.now() / 1000)
       ev_end.time.tv_usec = Math.round(Date.now() % 1000 * 1000)
+      ev_end_buffer = ev_end.ref()
 
       try
         fs.writeSync @fd, ev_buffer, 0, ev_buffer.length, null
