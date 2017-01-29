@@ -14,6 +14,7 @@ gamepad_hub = require './app/virtual_gamepad_hub'
 gp_hub = new gamepad_hub()
 keyboard_hub = require './app/virtual_keyboard_hub'
 kb_hub = new keyboard_hub()
+port = process.env.PORT || config.port
 
 app.use(express.static(__dirname + '/public'));
 
@@ -61,9 +62,9 @@ io.on 'connection', (socket) ->
 http.on 'error', (err) ->
   switch err.message
     when "listen EACCES"
-      console.error "You don't have permissions to open port", config.port,
+      console.error "You don't have permissions to open port", port,
         "For ports smaller than 1024, you need root privileges."
   throw err
 
-http.listen config.port, () ->
-  console.info "Listening on #{config.port}"
+http.listen port, () ->
+    console.info "Listening on #{port}"
