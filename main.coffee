@@ -59,10 +59,11 @@ io.on 'connection', (socket) ->
       kb_hub.sendEvent socket.keyBoardId, data
 
 http.on 'error', (err) ->
-  switch err.message
-    when "listen EACCES"
-      console.error "You don't have permissions to open port", config.port,
-        "For ports smaller than 1024, you need root privileges."
+  if err.hasOwnProperty('errno')
+    switch err.errno
+      when "EACCES"
+        console.error "You don't have permissions to open port", config.port, ".",
+          "For ports smaller than 1024, you need root privileges."
   throw err
 
 http.listen config.port, () ->
