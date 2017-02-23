@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Virtual Touchpad</title>
+		<link rel="stylesheet" type="text/css" href="/css/touchpad.css">
+		<script src="js/lib/jquery.js"></script>
+		<script src="js/lib/socketio.js"></script>
+		<script type="text/javascript" src="/js/joystick.js"></script>
+		<script type="text/javascript" src="/js/touchpad.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="mobile-web-app-capable" content="yes">
+		<style>
+			body {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				-o-user-select: none;
+			}
+		</style>
+	</head>
+	<body onload="app.init();">
+			<menu style="display:none">
+			<button id="setTouchpad">touchpad</button>
+			<button id="setJoystick">joystick</button>
+			<button id="goFullscreen">fullscreen</button>
+		</menu>
+		<section id="touchpad" style="display:block">
+			<div id="touchpad-area"></div>
+			<div id="touchpad-btn_left"></div>
+			<div id="touchpad-btn_right"></div>
+		</section>
+		<section id="joystick" style="display:none"></section>
+		<div id="connecting">
+			<span>connecting...</span>
+		</div>
+	</body>
+</html>
