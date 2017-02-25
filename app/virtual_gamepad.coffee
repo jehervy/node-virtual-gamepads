@@ -37,6 +37,8 @@ class virtual_gamepad
         ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_Y
 
         uidev = new uinputStructs.uinput_user_dev
+        uidev_buffer = uidev.ref()
+        uidev_buffer.fill(0)
         uidev.name = Array.from("Virtual gamepad")
         uidev.id.bustype = uinput.BUS_USB
         uidev.id.vendor = 0x3
@@ -52,8 +54,6 @@ class virtual_gamepad
         uidev.absmin[uinput.ABS_Y] = 0
         uidev.absfuzz[uinput.ABS_Y] = 0
         uidev.absflat[uinput.ABS_Y] = 15
-
-        uidev_buffer = uidev.ref()
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
