@@ -14,8 +14,8 @@ gamepad_hub = require './app/virtual_gamepad_hub'
 gp_hub = new gamepad_hub()
 keyboard_hub = require './app/virtual_keyboard_hub'
 kb_hub = new keyboard_hub()
-trackpad_hub = require './app/virtual_trackpad_hub'
-tp_hub = new trackpad_hub()
+touchpad_hub = require './app/virtual_touchpad_hub'
+tp_hub = new touchpad_hub()
 
 port = process.env.PORT || config.port
 
@@ -30,9 +30,9 @@ io.on 'connection', (socket) ->
     else if socket.keyBoardId != undefined
       console.info('Keyboard disconnected')
       kb_hub.disconnectKeyboard socket.keyBoardId, () ->
-    else if socket.trackpadId != undefined
-      console.info('Trackpad disconnected')
-      tp_hub.disconnectTrackpad socket.trackpadId, () ->
+    else if socket.touchpadId != undefined
+      console.info('Touchpad disconnected')
+      tp_hub.disconnectTouchpad socket.touchpadId, () ->
     else
       console.info('Unknown disconnect')
 
@@ -65,19 +65,19 @@ io.on 'connection', (socket) ->
     if socket.keyBoardId != undefined and data
       kb_hub.sendEvent socket.keyBoardId, data
 
-  socket.on 'connectTrackpad', () ->
-    tp_hub.connectTrackpad (trackpadId) ->
-      if trackpadId != -1
-        console.info('Trackpad connected')
-        socket.trackpadId = trackpadId
-        socket.emit 'trackpadConnected', {trackpadId: trackpadId}
+  socket.on 'connectTouchpad', () ->
+    tp_hub.connectTouchpad (touchpadId) ->
+      if touchpadId != -1
+        console.info('Touchpad connected')
+        socket.touchpadId = touchpadId
+        socket.emit 'touchpadConnected', {touchpadId: touchpadId}
       else
-        console.info('Trackpad connect failed')
+        console.info('Touchpad connect failed')
 
-  socket.on 'trackpadEvent', (data) ->
-    console.info('Trackpad event', data)
-    if socket.trackpadId != undefined and data
-      tp_hub.sendEvent socket.trackpadId, data
+  socket.on 'touchpadEvent', (data) ->
+    console.info('Touchpad event', data)
+    if socket.touchpadId != undefined and data
+      tp_hub.sendEvent socket.touchpadId, data
 
 http.on 'error', (err) ->
   if err.hasOwnProperty('errno')

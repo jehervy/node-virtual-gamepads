@@ -5,7 +5,7 @@ Virtual gamepad class
  */
 
 (function() {
-  var config, fs, ioctl, uinput, uinputStructs, virtual_trackpad;
+  var config, fs, ioctl, uinput, uinputStructs, virtual_touchpad;
 
   fs = require('fs');
 
@@ -17,10 +17,10 @@ Virtual gamepad class
 
   config = require('../config.json');
 
-  virtual_trackpad = (function() {
-    function virtual_trackpad() {}
+  virtual_touchpad = (function() {
+    function virtual_touchpad() {}
 
-    virtual_trackpad.prototype.connect = function(callback, error, retry) {
+    virtual_touchpad.prototype.connect = function(callback, error, retry) {
       if (retry == null) {
         retry = 0;
       }
@@ -53,7 +53,7 @@ Virtual gamepad class
             uidev = new uinputStructs.uinput_user_dev;
             uidev_buffer = uidev.ref();
             uidev_buffer.fill(0);
-            uidev.name = Array.from("Virtual trackpad");
+            uidev.name = Array.from("Virtual touchpad");
             uidev.id.bustype = uinput.BUS_USB;
             uidev.id.vendor = 0x3;
             uidev.id.product = 0x5;
@@ -69,7 +69,7 @@ Virtual gamepad class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                console.warn("Error on init trackpad write:\n", err);
+                console.warn("Error on init touchpad write:\n", err);
                 return error(err);
               } else {
                 try {
@@ -77,11 +77,11 @@ Virtual gamepad class
                   return callback();
                 } catch (error1) {
                   err = error1;
-                  console.error("Error on trackpad create dev:\n", err);
+                  console.error("Error on touchpad create dev:\n", err);
                   fs.close(_this.fd);
                   _this.fd = void 0;
                   if (retry < 5) {
-                    console.info("Retry to create trackpad");
+                    console.info("Retry to create touchpad");
                     return _this.connect(callback, error, retry + 1);
                   } else {
                     console.error("Gave up on creating device");
@@ -95,7 +95,7 @@ Virtual gamepad class
       })(this));
     };
 
-    virtual_trackpad.prototype.disconnect = function(callback) {
+    virtual_touchpad.prototype.disconnect = function(callback) {
       if (this.fd) {
         ioctl(this.fd, uinput.UI_DEV_DESTROY);
         fs.close(this.fd);
@@ -104,7 +104,7 @@ Virtual gamepad class
       }
     };
 
-    virtual_trackpad.prototype.sendEvent = function(event) {
+    virtual_touchpad.prototype.sendEvent = function(event) {
       var err, error1, error2, ev, ev_buffer, ev_end, ev_end_buffer;
       if (this.fd) {
         ev = new uinputStructs.input_event;
@@ -138,10 +138,10 @@ Virtual gamepad class
       }
     };
 
-    return virtual_trackpad;
+    return virtual_touchpad;
 
   })();
 
-  module.exports = virtual_trackpad;
+  module.exports = virtual_touchpad;
 
 }).call(this);

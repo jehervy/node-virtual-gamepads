@@ -150,8 +150,8 @@ var app = {
             start: function (coords) {
             },
             move: function (abs_coords, rel_coords) {
-                app.emit(["trackpadEvent", 3 /*'EV_ABS'*/, 0 /*'ABS_X'*/, rel_coords.x],
-                    ["trackpadEvent", 3 /*'EV_ABS'*/, 1 /*'ABS_Y'*/, rel_coords.y]);
+                app.emit(["touchpadEvent", 3 /*'EV_ABS'*/, 0 /*'ABS_X'*/, rel_coords.x],
+                    ["touchpadEvent", 3 /*'EV_ABS'*/, 1 /*'ABS_Y'*/, rel_coords.y]);
             },
             end: function () {
             },
@@ -193,7 +193,7 @@ var app = {
                         break;
                 }
                 if (code) {
-                    app.emit("trackpadEvent", 1 /*'EV_KEY'*/, code, 1);
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, code, 1);
                 }
             },
 
@@ -218,7 +218,7 @@ var app = {
                         break;
                 }
                 if (code) {
-                    app.emit("trackpadEvent", 1 /*'EV_KEY'*/, code, 0);
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, code, 0);
                 }
             },
 
@@ -235,23 +235,23 @@ var app = {
     createTouchpadClient: function (options) {
         options.btn_left && options.btn_left.addEventListener('touchstart', function () {
             if (app.drag == 0) {
-                app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
+                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
             }
             app.clicks += 1;
         });
         options.btn_left && options.btn_left.addEventListener('touchend', function () {
             if (app.drag == 0) {
-                app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
             }
             app.clicks -= 1;
         });
 
         options.btn_right && options.btn_right.addEventListener('touchstart', function () {
-            app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1);
+            app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1);
             app.clicks += 2;
         });
         options.btn_right && options.btn_right.addEventListener('touchend', function () {
-            app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0);
+            app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0);
             app.clicks -= 2;
         });
 
@@ -277,22 +277,22 @@ var app = {
                 if (app.touches >= 3) {
                     // drag and drop
                     if (app.drag == 0 && (app.clicks & 1) == 0) {
-                        app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
+                        app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
                     }
                     app.drag = 1;
                     app.emit(
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 0 /*'REL_X'*/, x],
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 1 /*'REL_Y'*/, y]
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 0 /*'REL_X'*/, x],
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 1 /*'REL_Y'*/, y]
                     );
                 } else if (app.touches == 2) {
                     app.emit(
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 8 /*'REL_WHEEL' */, -x],
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 6 /*'REL_HWHEEL'*/, -y]
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 8 /*'REL_WHEEL' */, -x],
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 6 /*'REL_HWHEEL'*/, -y]
                     );
                 } else {
                     app.emit(
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 0 /*'REL_X'*/, x],
-                        ["trackpadEvent", 2 /*'EV_REL'*/, 1 /*'REL_Y'*/, y]
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 0 /*'REL_X'*/, x],
+                        ["touchpadEvent", 2 /*'EV_REL'*/, 1 /*'REL_Y'*/, y]
                     );
                 }
             }
@@ -307,7 +307,7 @@ var app = {
                 // end of a touchmove
                 if (app.drag == 1 && (app.clicks & 1) == 0) {
                     // end a drag and drop move
-                    app.emit("trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
                 }
                 app.drag = 0;
             } else if (app.clicks == 0) {
@@ -315,23 +315,23 @@ var app = {
                 // only in this case register a tap on the touchpad as a mouse click.
                 if (app.touches == 1) {
                     app.emit(
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1],
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0]
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1],
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0]
                     );
                 } else if (app.touches == 2) {
                     app.emit(
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1],
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0]
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1],
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0]
                     );
                 } else if (app.touches == 3) {
                     app.emit(
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 1],
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 0]
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 1],
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 0]
                     );
                 } else if (app.touches >= 4) {
                     app.emit(
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3],
-                        ["trackpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3]
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3],
+                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3]
                     );
                 }
             }
@@ -403,13 +403,13 @@ var app = {
         !function connect() {
             app.socket = io();
 
-            app.socket.on("trackpadConnected", function (data) {
-                slotNumber = data.trackpadId;
+            app.socket.on("touchpadConnected", function (data) {
+                slotNumber = data.touchpadId;
                 document.getElementById('connecting').style.display = 'none';
             });
 
             app.socket.on("connect", function () {
-                app.socket.emit("connectTrackpad", null);
+                app.socket.emit("connectTouchpad", null);
                 document.getElementById('connecting').style.display = 'block';
             });
 

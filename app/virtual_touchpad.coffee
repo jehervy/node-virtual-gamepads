@@ -8,7 +8,7 @@ uinput = require '../lib/uinput'
 uinputStructs = require '../lib/uinput_structs'
 config = require '../config.json'
 
-class virtual_trackpad
+class virtual_touchpad
 
   constructor: () ->
 
@@ -45,7 +45,7 @@ class virtual_trackpad
         uidev = new uinputStructs.uinput_user_dev
         uidev_buffer = uidev.ref()
         uidev_buffer.fill(0)
-        uidev.name = Array.from("Virtual trackpad")
+        uidev.name = Array.from("Virtual touchpad")
         uidev.id.bustype = uinput.BUS_USB
         uidev.id.vendor = 0x3
         uidev.id.product = 0x5
@@ -63,18 +63,18 @@ class virtual_trackpad
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            console.warn "Error on init trackpad write:\n", err
+            console.warn "Error on init touchpad write:\n", err
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch err
-              console.error "Error on trackpad create dev:\n", err
+              console.error "Error on touchpad create dev:\n", err
               fs.close @fd
               @fd = undefined
               if retry < 5
-                console.info "Retry to create trackpad"
+                console.info "Retry to create touchpad"
                 @connect callback, error, retry+1
               else
                 console.error "Gave up on creating device"
@@ -117,4 +117,4 @@ class virtual_trackpad
         throw err
 
 
-module.exports = virtual_trackpad
+module.exports = virtual_touchpad
