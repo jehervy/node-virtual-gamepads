@@ -72,6 +72,12 @@ small.explain {
     line-height: 1em;
 }
 
+small.explain.center {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+}
+
 a {
     color: #2196F3;
 }
@@ -103,9 +109,12 @@ form .form-row > .nested {
 }
 
 form .form-row > .nested > select {
-    width: 100%;
     padding: 0.3em;
     margin-bottom: 0.4em;
+}
+
+form .form-row > .nested > input {
+    width: 100%;
 }
 
 @media (max-width: 550px) {

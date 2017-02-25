@@ -1,5 +1,4 @@
 ###
-Created by MIROOF on 04/03/2015
 Virtual gamepad class
 ###
 
@@ -9,8 +8,7 @@ uinput = require '../lib/uinput'
 uinputStructs = require '../lib/uinput_structs'
 config = require '../config.json'
 
-
-class virtual_gamepad
+class virtual_trackpad
 
   constructor: () ->
 
@@ -23,6 +21,9 @@ class virtual_gamepad
 
         # Init buttons
         ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_KEY
+        ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_LEFT
+        ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_RIGHT
+        ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_MIDDLE
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_A
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_B
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_X
@@ -31,17 +32,23 @@ class virtual_gamepad
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_TR
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_START
         ioctl @fd, uinput.UI_SET_KEYBIT, uinput.BTN_SELECT
-        # Init directions
+        # Init absolute directions
         ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_ABS
         ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_X
         ioctl @fd, uinput.UI_SET_ABSBIT, uinput.ABS_Y
+        # Init relative directions
+        ioctl @fd, uinput.UI_SET_EVBIT, uinput.EV_REL
+        ioctl @fd, uinput.UI_SET_RELBIT, uinput.REL_X
+        ioctl @fd, uinput.UI_SET_RELBIT, uinput.REL_Y
+        ioctl @fd, uinput.UI_SET_RELBIT, uinput.REL_WHEEL
 
         uidev = new uinputStructs.uinput_user_dev
-        uidev.name = Array.from("Virtual gamepad")
+        uidev.name = Array.from("Virtual trackpad")
         uidev.id.bustype = uinput.BUS_USB
         uidev.id.vendor = 0x3
-        uidev.id.product = 0x3
-        uidev.id.version = 2
+        uidev.id.product = 0x5
+        uidev.id.version = 1
+        uidev_buffer = uidev.ref()
 
         uidev.absmax[uinput.ABS_X] = 255
         uidev.absmin[uinput.ABS_X] = 0
@@ -53,22 +60,20 @@ class virtual_gamepad
         uidev.absfuzz[uinput.ABS_Y] = 0
         uidev.absflat[uinput.ABS_Y] = 15
 
-        uidev_buffer = uidev.ref()
-
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            console.warn "Error on init gamepad write:\n", err
+            console.warn "Error on init trackpad write:\n", err
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch err
-              console.error "Error on gamepad create dev:\n", err
+              console.error "Error on trackpad create dev:\n", err
               fs.close @fd
               @fd = undefined
               if retry < 5
-                console.info "Retry to create gamepad"
+                console.info "Retry to create trackpad"
                 @connect callback, error, retry+1
               else
                 console.error "Gave up on creating device"
@@ -81,7 +86,7 @@ class virtual_gamepad
       @fd = undefined
       callback()
 
-  sendEvent: (event, error) ->
+  sendEvent: (event) ->
     if @fd
       ev = new uinputStructs.input_event
       ev.type = event.type
@@ -111,4 +116,4 @@ class virtual_gamepad
         throw err
 
 
-module.exports = virtual_gamepad
+module.exports = virtual_trackpad
