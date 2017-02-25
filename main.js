@@ -34,6 +34,14 @@ Virtual gamepad application
 
   port = process.env.PORT || config.port;
 
+  app.get('/', function(req, res) {
+    if (config.useGamepadByDefault) {
+      return res.redirect('gamepad.html');
+    } else {
+      return res.redirect('index.html');
+    }
+  });
+
   app.use(express["static"](__dirname + '/public'));
 
   io.on('connection', function(socket) {
