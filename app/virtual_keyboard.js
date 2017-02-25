@@ -34,12 +34,13 @@ Virtual keyboard class
               ioctl(_this.fd, uinput.UI_SET_KEYBIT, i);
             }
             uidev = new uinputStructs.uinput_user_dev;
+            uidev_buffer = uidev.ref();
+            uidev_buffer.fill(0);
             uidev.name = Array.from("Virtual keyboard");
             uidev.id.bustype = uinput.BUS_USB;
             uidev.id.vendor = 0x3;
             uidev.id.product = 0x4;
             uidev.id.version = 1;
-            uidev_buffer = uidev.ref();
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {

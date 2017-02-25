@@ -51,12 +51,13 @@ Virtual gamepad class
             ioctl(_this.fd, uinput.UI_SET_RELBIT, uinput.REL_Y);
             ioctl(_this.fd, uinput.UI_SET_RELBIT, uinput.REL_WHEEL);
             uidev = new uinputStructs.uinput_user_dev;
+            uidev_buffer = uidev.ref();
+            uidev_buffer.fill(0);
             uidev.name = Array.from("Virtual trackpad");
             uidev.id.bustype = uinput.BUS_USB;
             uidev.id.vendor = 0x3;
             uidev.id.product = 0x5;
             uidev.id.version = 1;
-            uidev_buffer = uidev.ref();
             uidev.absmax[uinput.ABS_X] = 255;
             uidev.absmin[uinput.ABS_X] = 0;
             uidev.absfuzz[uinput.ABS_X] = 0;
