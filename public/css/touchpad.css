@@ -133,3 +133,17 @@ button:active {
     -moz-animation: blink 0.7s infinite;
     -webkit-animation: blink 0.7s infinite;
 }
+
+#settings-gear {
+    float: right;
+    height: 50px;
+}
+
+#settings-gear svg {
+    fill: #666;
+    margin-top: 7px;
+    margin-right: 7px;
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+}

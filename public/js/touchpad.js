@@ -2,6 +2,127 @@ var TOUCHPAD = 'touchpad';
 
 var JOYSTICK = 'joystick';
 
+var settings = function () {
+
+    var settings = {};
+
+    /*
+     * Settings modal stuff
+     */
+
+    settings.modal = {};
+    settings.modal.isOpen = false;
+
+    // initialize settings modal
+    $(document).ready(function () {
+        var settingsModal = $("#settings-modal");
+
+        $('#settings-speed').on('input', function () {
+            $('#settings-speed-output').val($(this).val());
+        });
+        $('#settings-acceleration').on('input', function () {
+            $('#settings-acceleration-output').val($(this).val());
+        });
+
+        settings.modal.open = function () {
+            settingsModal.removeClass('closed');
+            settings.modal.isOpen = true;
+        };
+        settings.modal.close = function () {
+            settingsModal.addClass('closed');
+            settings.modal.isOpen = false;
+        };
+
+        function initDialog() {
+            $('#settings-speed').val(settings.speed);
+            $('#settings-speed-output').val(settings.speed);
+            $('#settings-acceleration').val(settings.acceleration);
+            $('#settings-acceleration-output').val(settings.acceleration);
+        }
+
+        function bindSubmit() {
+            $('#settings-form').submit(function (event) {
+                var formData = {};
+                $(this).find(':input').each(function (i, e) {
+                    e = $(e);
+                    var name = e.attr('name');
+                    if (name == null) return;
+                    var val;
+                    if (e.attr('type') == 'checkbox') {
+                        val = e.prop('checked');
+                    } else {
+                        val = e.val();
+                    }
+                    formData[name] = val;
+                });
+                settings.update(formData);
+                settingsModal.modal.close();
+                event.preventDefault();
+                event.stopPropagation();
+            })
+        }
+
+        function bindClose() {
+            settingsModal.find(".close").addBack().click(function (event) {
+                settings.modal.close();
+            });
+            $(".modal").click(function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        initDialog();
+        bindClose();
+        bindSubmit();
+    });
+
+    /*
+     * Rest of the settings
+     */
+
+    var localStorageAvailable = (typeof(Storage) !== "undefined");
+
+    settings.speed = null;
+    settings.acceleration = null;
+
+    settings.update = function(update) {
+        if (update.hasOwnProperty('speed')) settings.speed = parseFloat(update.speed);
+        if (update.hasOwnProperty('acceleration')) settings.acceleration = parseFloat(update.acceleration);
+        if (localStorageAvailable) {
+            window.localStorage.setItem('touchpadSettings', JSON.stringify({
+                speed: settings.speed,
+                acceleration: settings.acceleration
+            }));
+        }
+    };
+
+    function defaultSettings() {
+        return {
+            speed: 2,
+            acceleration: 1.5
+        }
+    }
+
+    function init() {
+        if (localStorageAvailable) {
+            var touchpadSettings = window.localStorage.getItem("touchpadSettings");
+            if (touchpadSettings == null) {
+                touchpadSettings = defaultSettings();
+            } else {
+                touchpadSettings = JSON.parse(touchpadSettings);
+            }
+            settings.update(touchpadSettings);
+        } else {
+            console.error('localStorage not available. Settings can\'t be stored.')
+        }
+    }
+
+    init();
+
+    return settings;
+}();
+
+
 var app = {
 
     clicks: 0,
@@ -151,8 +272,8 @@ var app = {
             } else {
                 var x = e.touches[app.touchindex].pageX - app.current_x;
                 var y = e.touches[app.touchindex].pageY - app.current_y;
-                x = (x >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(3 * x), 1.5);
-                y = (y >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(3 * y), 1.5);
+                x = (x >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(settings.speed * x), settings.acceleration);
+                y = (y >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(settings.speed * y), settings.acceleration);
                 if (app.touches >= 3) {
                     // drag and drop
                     if (app.drag == 0 && (app.clicks & 1) == 0) {
@@ -274,6 +395,9 @@ var app = {
             joystick_screen.style.display = 'block';
             touchpad_screen.style.display = 'none';
             app.current_device = JOYSTICK;
+        });
+        document.getElementById('gear-svg').addEventListener('click', function () {
+            settings.modal.open();
         });
 
         !function connect() {
