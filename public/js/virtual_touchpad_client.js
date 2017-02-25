@@ -56,7 +56,7 @@ var settings = function () {
                     formData[name] = val;
                 });
                 settings.update(formData);
-                settingsModal.modal.close();
+                settings.modal.close();
                 event.preventDefault();
                 event.stopPropagation();
             })
