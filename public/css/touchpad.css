@@ -1,0 +1,157 @@
+body {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+html {
+    background: #292929 url(../images/noise.png);
+    font-family: sans-serif;
+}
+
+button {
+    font-size: 14px;
+    background: #111;
+    color: #666;
+    border: 0;
+    padding: 10px;
+    margin: 7px;
+}
+
+button:hover {
+    background: #050505;
+}
+
+button:active {
+    color: #fff;
+    background: #000;
+}
+
+#menu {
+    background: #222;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 50px;
+    z-index: 10;
+}
+
+#touchpad {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 50px;
+}
+
+#touchpad-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 20%;
+    background: -moz-radial-gradient(ellipse farthest-corner, rgba(255, 255, 255, 0.10) 0%, rgba(0, 0, 0, 0.01) 100%); /* FF3.6+ */
+    background: -webkit-radial-gradient(ellipse farthest-corner, rgba(255, 255, 255, 0.10) 0%, rgba(0, 0, 0, 0.01) 100%); /* Chrome10+,Safari5.1+ */
+    border-bottom: 1px solid #242424;
+}
+
+#touchpad-btn_left {
+    left: 0;
+    right: 50%;
+    border-right: 1px solid #242424;
+}
+
+#touchpad-btn_right {
+    left: 50%;
+    right: 0;
+    border-left: 1px solid #383838;
+}
+
+#touchpad-btn_left,
+#touchpad-btn_right {
+    position: absolute;
+    top: 80%;
+    bottom: 0;
+    border-top: 1px solid #383838;
+}
+
+#connecting {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+@-webkit-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#connecting span {
+    color: #fff;
+    text-align: center;
+    font-family: monospace;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    -moz-animation: blink 0.7s infinite;
+    -webkit-animation: blink 0.7s infinite;
+}
+
+#settings-gear {
+    float: right;
+    height: 50px;
+}
+
+#settings-gear svg {
+    fill: #666;
+    margin-top: 7px;
+    margin-right: 7px;
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+}

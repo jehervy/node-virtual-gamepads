@@ -14,6 +14,10 @@ gamepad_hub = require './app/virtual_gamepad_hub'
 gp_hub = new gamepad_hub()
 keyboard_hub = require './app/virtual_keyboard_hub'
 kb_hub = new keyboard_hub()
+touchpad_hub = require './app/virtual_touchpad_hub'
+tp_hub = new touchpad_hub()
+
+port = process.env.PORT || config.port
 
 app.use(express.static(__dirname + '/public'));
 
@@ -26,6 +30,9 @@ io.on 'connection', (socket) ->
     else if socket.keyBoardId != undefined
       console.info('Keyboard disconnected')
       kb_hub.disconnectKeyboard socket.keyBoardId, () ->
+    else if socket.touchpadId != undefined
+      console.info('Touchpad disconnected')
+      tp_hub.disconnectTouchpad socket.touchpadId, () ->
     else
       console.info('Unknown disconnect')
 
@@ -58,12 +65,27 @@ io.on 'connection', (socket) ->
     if socket.keyBoardId != undefined and data
       kb_hub.sendEvent socket.keyBoardId, data
 
+  socket.on 'connectTouchpad', () ->
+    tp_hub.connectTouchpad (touchpadId) ->
+      if touchpadId != -1
+        console.info('Touchpad connected')
+        socket.touchpadId = touchpadId
+        socket.emit 'touchpadConnected', {touchpadId: touchpadId}
+      else
+        console.info('Touchpad connect failed')
+
+  socket.on 'touchpadEvent', (data) ->
+    console.info('Touchpad event', data)
+    if socket.touchpadId != undefined and data
+      tp_hub.sendEvent socket.touchpadId, data
+
 http.on 'error', (err) ->
-  switch err.message
-    when "listen EACCES"
-      console.error "You don't have permissions to open port", config.port,
-        "For ports smaller than 1024, you need root privileges."
+  if err.hasOwnProperty('errno')
+    switch err.errno
+      when "EACCES"
+        console.error "You don't have permissions to open port", port, ".",
+          "For ports smaller than 1024, you need root privileges."
   throw err
 
-http.listen config.port, () ->
-  console.info "Listening on #{config.port}"
+http.listen port, () ->
+    console.info "Listening on #{port}"
