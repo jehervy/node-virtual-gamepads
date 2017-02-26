@@ -56,10 +56,14 @@ define(function () {
                     }
                     formData[name] = val;
                 });
+                var oldKeyboardLayout = settings.keyboardLayout;
                 settings.update(formData);
-                settingsModal.modal.close();
+                settings.modal.close();
                 event.preventDefault();
                 event.stopPropagation();
+                if (oldKeyboardLayout != settings.keyboardLayout) {
+                    window.location.reload();
+                }
             })
         }
 
@@ -95,7 +99,7 @@ define(function () {
         if (localStorageAvailable) {
             window.localStorage.setItem('keyboardSettings', JSON.stringify({
                 keyboardLayout: settings.keyboardLayout,
-                stickyModKeys: settings.stickyModKeys,
+                stickyModKeys: settings.stickyModKeys
             }));
         }
     };
