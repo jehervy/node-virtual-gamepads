@@ -1,6 +1,6 @@
 {
   "name": "virtual-gamepads",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Virtual gamepads application",
   "main": "main.js",
   "author": "miroof",
