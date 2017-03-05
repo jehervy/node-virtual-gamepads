@@ -19,8 +19,16 @@ tp_hub = new touchpad_hub()
 
 port = process.env.PORT || config.port
 
+# draw routes
+app.get '/', (req, res) ->
+  if config.useGamepadByDefault
+    res.redirect 'gamepad.html'
+  else
+    res.redirect 'index.html'
+
 app.use(express.static(__dirname + '/public'));
 
+# socket io
 io.on 'connection', (socket) ->
 
   socket.on 'disconnect', () ->

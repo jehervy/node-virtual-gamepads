@@ -11,6 +11,69 @@ td {
     text-align: center;
 }
 
+/********************\
+|*** index styles ***|
+\********************/
+body {
+    transition: transform 0.3s ease-in, opacity 0.2s 0.1s ease-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in, opacity 0.2s 0.1s ease-out;
+    -moz-transition: -moz-transform 0.3s ease-in, opacity 0.2s 0.1s ease-out;
+}
+
+body.slide-left {
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    opacity: 0;
+}
+
+.control-selection:first-child {
+    margin-top: 3em;
+}
+
+.control-selection {
+    margin-top: 1em;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid #7c7c7c;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: .5em;
+    text-decoration: none;
+}
+
+.control-selection > img {
+    display: inline-flex;
+    height: 64px;
+    width: 64px;
+}
+
+.control-selection > span.text {
+    display: inline-flex;
+    color: #242424;
+    font-size: x-large;
+    flex: 1 0;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.control-selection > span.right-arrow {
+    display: inline-flex;
+    border: solid #7c7c7c;
+    border-width: 0 5px 5px 0;
+    padding: 10px;
+    transform: scaleX(.5) rotate(-45deg);
+    -webkit-transform: scaleX(.5) rotate(-45deg);
+    -moz-transform: scaleX(.5) rotate(-45deg);
+}
+
+/**********************\
+|*** gamepad styles ***|
+\**********************/
+
 #dirContainer {
     position: absolute;
     top: 0px;
