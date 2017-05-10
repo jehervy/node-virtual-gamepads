@@ -1,6 +1,6 @@
 # node-virtual-gamepads
 
-This nodejs application provides the possibility to use your smarpthone as a gamepad controller
+This nodejs application provides the possibility to use your smartphone as a gamepad controller
 on Linux OS simply by reaching a local address.
 You can virtually plug **up to 4** gamepad controllers.
 
@@ -27,7 +27,7 @@ a look at the [troubleshooting](TROUBLESHOOTING.md) page.
 Usage
 -----
 Once the nodejs application is launched, you just have to plug your gamepad controller
-by connecting your device on the same local network and by reaching the address *http://node_server_adress*
+by connecting your device on the same local network and by reaching the address *http://node_server_address*
 
 Features
 --------
