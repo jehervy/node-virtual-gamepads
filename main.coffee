@@ -19,12 +19,18 @@ tp_hub = new touchpad_hub()
 
 port = process.env.PORT || config.port
 
+# Add URL query string if analog mode is enabled
+if config.analog
+  suffix = '?analog'
+else
+  suffix = ''
+
 # draw routes
 app.get '/', (req, res) ->
   if config.useGamepadByDefault
-    res.redirect 'gamepad.html'
+    res.redirect 'gamepad.html' + suffix
   else
-    res.redirect 'index.html'
+    res.redirect 'index.html' + suffix
 
 app.use(express.static(__dirname + '/public'));
 
