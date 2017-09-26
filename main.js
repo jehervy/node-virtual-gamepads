@@ -6,7 +6,7 @@ Virtual gamepad application
  */
 
 (function() {
-  var app, config, express, gamepad_hub, gp_hub, http, io, kb_hub, keyboard_hub, path, port, touchpad_hub, tp_hub;
+  var app, config, express, gamepad_hub, gp_hub, http, io, kb_hub, keyboard_hub, path, port, suffix, touchpad_hub, tp_hub;
 
   path = require('path');
 
@@ -34,11 +34,17 @@ Virtual gamepad application
 
   port = process.env.PORT || config.port;
 
+  if (config.analog) {
+    suffix = '?analog';
+  } else {
+    suffix = '';
+  }
+
   app.get('/', function(req, res) {
     if (config.useGamepadByDefault) {
-      return res.redirect('gamepad.html');
+      return res.redirect('gamepad.html' + suffix);
     } else {
-      return res.redirect('index.html');
+      return res.redirect('index.html' + suffix);
     }
   });
 
