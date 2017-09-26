@@ -150,8 +150,10 @@ var app = {
             start: function (coords) {
             },
             move: function (abs_coords, rel_coords) {
-                app.emit(["touchpadEvent", 3 /*'EV_ABS'*/, 0 /*'ABS_X'*/, rel_coords.x],
-                    ["touchpadEvent", 3 /*'EV_ABS'*/, 1 /*'ABS_Y'*/, rel_coords.y]);
+                app.emit(
+                    ["touchpadEvent", 3 /*'EV_ABS'*/, 0 /*'ABS_X'*/, rel_coords.x],
+                    ["touchpadEvent", 3 /*'EV_ABS'*/, 1 /*'ABS_Y'*/, rel_coords.y]
+                );
             },
             end: function () {
             },
@@ -234,35 +236,58 @@ var app = {
 
     createTouchpadClient: function (options) {
         options.btn_left && options.btn_left.addEventListener('touchstart', function () {
-            if (app.drag == 0) {
-                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
+            if ((app.clicks & 1) == 0) {
+                if (app.drag == 0) {
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
+                }
+                app.clicks |= 1;
             }
-            app.clicks += 1;
         });
         options.btn_left && options.btn_left.addEventListener('touchend', function () {
-            if (app.drag == 0) {
-                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+            if (app.clicks & 1) {
+                if (app.drag == 0) {
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+                }
+                app.clicks &= ~1;
             }
-            app.clicks -= 1;
         });
 
         options.btn_right && options.btn_right.addEventListener('touchstart', function () {
-            app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1);
-            app.clicks += 2;
+            if ((app.clicks & 2) == 0) {
+                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1);
+                app.clicks |= 2;
+            }
         });
         options.btn_right && options.btn_right.addEventListener('touchend', function () {
-            app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0);
-            app.clicks -= 2;
+            if (app.clicks & 2) {
+                app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0);
+                app.clicks &= ~2;
+            }
         });
 
         options.area && options.area.addEventListener('touchstart', function (e) {
             e.preventDefault();
-            // do not count touches into the mouse button areas
-            app.touches = e.touches.length - (app.clicks & 1) - ((app.clicks & 2) >> 1);
-            app.touchindex = e.touches.length - 1;
-            app.touchmove = 0;
-            app.current_x = e.touches[app.touchindex].pageX;
-            app.current_y = e.touches[app.touchindex].pageY;
+            // Do not count touches into the mouse button areas.
+            var currentTouches = e.touches.length - (app.clicks & 1) - ((app.clicks & 2) >> 1);
+            if (currentTouches <= 4 || app.touches < 4) {
+                app.touches = currentTouches;
+                app.touchindex = e.touches.length - 1;
+                app.touchmove = 0;
+                app.current_x = e.touches[app.touchindex].pageX;
+                app.current_y = e.touches[app.touchindex].pageY;
+                if (app.touches == 3) {
+                    // Start drag and drop with left mouse button.
+                    if (app.drag == 0 && (app.clicks & 1) == 0) {
+                        app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
+                    }
+                    app.drag = 1;
+                }
+                if (app.touches >= 4) {
+                    app.touches = 4;
+                    // Start pressing the middle mouse button.
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 1);
+                }
+            }
         });
 
         options.area && options.area.addEventListener('touchmove', function (e) {
@@ -272,19 +297,9 @@ var app = {
             } else {
                 var x = e.touches[app.touchindex].pageX - app.current_x;
                 var y = e.touches[app.touchindex].pageY - app.current_y;
-                x = (x >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(settings.speed * x), settings.acceleration);
-                y = (y >= 0 ? 1.0 : -1.0) * Math.pow(Math.abs(settings.speed * y), settings.acceleration);
-                if (app.touches >= 3) {
-                    // drag and drop
-                    if (app.drag == 0 && (app.clicks & 1) == 0) {
-                        app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1);
-                    }
-                    app.drag = 1;
-                    app.emit(
-                        ["touchpadEvent", 2 /*'EV_REL'*/, 0 /*'REL_X'*/, x],
-                        ["touchpadEvent", 2 /*'EV_REL'*/, 1 /*'REL_Y'*/, y]
-                    );
-                } else if (app.touches == 2) {
+                x = (x >= 0 ? 1 : -1) * Math.round(Math.pow(Math.abs(settings.speed * x), settings.acceleration));
+                y = (y >= 0 ? 1 : -1) * Math.round(Math.pow(Math.abs(settings.speed * y), settings.acceleration));
+                if (app.touches == 2) {
                     app.emit(
                         ["touchpadEvent", 2 /*'EV_REL'*/, 8 /*'REL_WHEEL' */, -x],
                         ["touchpadEvent", 2 /*'EV_REL'*/, 6 /*'REL_HWHEEL'*/, -y]
@@ -303,39 +318,39 @@ var app = {
 
         options.area && options.area.addEventListener('touchend', function (e) {
             e.preventDefault();
-            if (app.touchmove == 1) {
-                // end of a touchmove
-                if (app.drag == 1 && (app.clicks & 1) == 0) {
-                    // end a drag and drop move
-                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+            var currentTouches = e.touches.length - (app.clicks & 1) - ((app.clicks & 2) >> 1);
+            if (currentTouches < 4) {
+                if (currentTouches < 4 && app.touches == 4) {
+                    // This is the release of the middle mouse button.
+                    app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 0);
                 }
-                app.drag = 0;
-            } else if (app.clicks == 0) {
-                // There are no clicks in the mouse button areas,
-                // only in this case register a tap on the touchpad as a mouse click.
-                if (app.touches == 1) {
-                    app.emit(
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1],
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0]
-                    );
-                } else if (app.touches == 2) {
-                    app.emit(
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1],
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0]
-                    );
-                } else if (app.touches == 3) {
-                    app.emit(
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 1],
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x112 /*'BTN_MIDDLE'*/, 0]
-                    );
-                } else if (app.touches >= 4) {
-                    app.emit(
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3],
-                        ["touchpadEvent", 1 /*'EV_KEY'*/, 0x113 /*'BTN_SIDE'*/, 3]
-                    );
+                if (currentTouches < 3) {
+                    if (app.drag == 1 && (app.clicks & 1) == 0) {
+                        // This is the end a drag and drop action (eventually without a move).
+                        app.emit("touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0);
+                    }
+                    app.drag = 0;
                 }
+                if (app.touchmove == 0 && (app.clicks & 3) == 0) {
+                    // This was only a tap on the touchpad and there are no touches in the mouse button areas,
+                    // in this case we may emit a click of the left or right mouse button.
+                    if (app.touches == 1) {
+                        app.emit(
+                            ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 1],
+                            ["touchpadEvent", 1 /*'EV_KEY'*/, 0x110 /*'BTN_LEFT'*/, 0]
+                        );
+                    } else if (app.touches == 2) {
+                        app.emit(
+                            ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 1],
+                            ["touchpadEvent", 1 /*'EV_KEY'*/, 0x111 /*'BTN_RIGHT'*/, 0]
+                        );
+                    }
+                }
+                // Setting app.touchmove prevents the detection of unintended left and right clicke
+                // when not lifting the fingers at the same time.
+                app.touchmove = 1;
+                app.touches = currentTouches;
             }
-            app.touches = 0;
         });
     },
 
