@@ -6,7 +6,7 @@ Virtual keyboard class
  */
 
 (function() {
-  var config, fs, ioctl, uinput, uinputStructs, virtual_keyboard;
+  var config, fs, ioctl, uinput, uinputStructs, virtual_keyboard, winston;
 
   fs = require('fs');
 
@@ -17,6 +17,10 @@ Virtual keyboard class
   uinputStructs = require('../lib/uinput_structs');
 
   config = require('../config.json');
+
+  winston = require('winston');
+
+  winston.level = config.logLevel;
 
   virtual_keyboard = (function() {
     function virtual_keyboard() {}
@@ -44,7 +48,7 @@ Virtual keyboard class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                console.error(err);
+                winston.log('error', err);
                 return error(err);
               } else {
                 try {
@@ -52,7 +56,7 @@ Virtual keyboard class
                   return callback();
                 } catch (error1) {
                   error = error1;
-                  console.error(error);
+                  winston.log('error', error);
                   fs.close(_this.fd);
                   _this.fd = void 0;
                   return _this.connect(callback, error);
@@ -75,7 +79,7 @@ Virtual keyboard class
 
     virtual_keyboard.prototype.sendEvent = function(event) {
       var ev, ev_buffer, ev_end, ev_end_buffer;
-      console.log(event);
+      winston.log('debug', event);
       if (this.fd) {
         ev = new uinputStructs.input_event;
         ev.type = event.type;

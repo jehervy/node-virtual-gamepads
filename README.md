@@ -19,10 +19,28 @@ Installation
     git clone https://github.com/miroof/node-virtual-gamepads
     cd node-virtual-gamepads
     npm install
-    sudo node main.js
 
 If you encounter problems while installing or running node-virtual-gamepads have
 a look at the [troubleshooting](TROUBLESHOOTING.md) page.
+
+You can now configure the server to your needs. Just open `config.json`
+with the editor of you choice and adjust the values.
+
+  * `port`: sets the port the web-server is listening on.
+  * `useGamepadByDefault`: if set to `false`, the `/` will redirect to a
+    page where one of gamepad, keyboard, or touchpad can be chosen.
+    If set to `true`, `/` redirects to the gamepad. The input-selection
+    page can still be accessed via `/index.html`.
+  * `analog`: if set to `true` the the above mentioned redirection will
+    append `?analog` to the address. This flag will cause the gamepad's
+    d-pad to act like an analog stick instead of d-pad.
+  * `logLevel`: set it to `"debug"` to get a lot more logging output,
+    to `"warning"` to only get critical output, or even to `"error"` if
+    you want to only get errors logged (not recommended).
+
+To start the server run
+    
+    sudo node main.js
 
 Usage
 -----
@@ -61,6 +79,15 @@ to let as much space as possible for the joystick and avoid touch mistakes.
 To know if we pressed a button with success, the web application provides an haptic feedback
 which can be easily deactivated by turning off the vibrations of the phone.
 
+### Use the keyboard to enter text
+![Virtual Keyboard](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/keyboard.png?raw=true)
+
+### Use the touchpad for mouse inputs
+![Virtual Touchpad](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/touchpad.png?raw=true)
+
+### An index page lets you choose
+![Index page](https://github.com/miroof/node-virtual-gamepads/blob/resources/screenshots/index.png?raw=true)
+
 Developing
 ----------
 For developing you will also have to install coffeescript
@@ -78,4 +105,3 @@ To compile all coffee files when ever they change run
     coffee -cw .
 
 If you want do add a new keyboard layout please refer to [this file](CREATE_KEYBOARD_LAYOUT.md).
-
