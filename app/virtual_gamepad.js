@@ -6,7 +6,7 @@ Virtual gamepad class
  */
 
 (function() {
-  var config, fs, ioctl, uinput, uinputStructs, virtual_gamepad, winston;
+  var fs, ioctl, log, uinput, uinputStructs, virtual_gamepad;
 
   fs = require('fs');
 
@@ -16,11 +16,7 @@ Virtual gamepad class
 
   uinputStructs = require('../lib/uinput_structs');
 
-  config = require('../config.json');
-
-  winston = require('winston');
-
-  winston.level = config.logLevel;
+  log = require('../lib/log');
 
   virtual_gamepad = (function() {
     function virtual_gamepad() {}
@@ -67,7 +63,7 @@ Virtual gamepad class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                winston.log('warn', "Error on init gamepad write:\n", err);
+                log('warn', "Error on init gamepad write:\n", err);
                 return error(err);
               } else {
                 try {
@@ -75,14 +71,14 @@ Virtual gamepad class
                   return callback();
                 } catch (error1) {
                   err = error1;
-                  winston.log('error', "Error on gamepad create dev:\n", err);
+                  log('error', "Error on gamepad create dev:\n", err);
                   fs.close(_this.fd);
                   _this.fd = void 0;
                   if (retry < 5) {
-                    winston.log('info', "Retry to create gamepad");
+                    log('info', "Retry to create gamepad");
                     return _this.connect(callback, error, retry + 1);
                   } else {
-                    winston.log('error', "Gave up on creating device");
+                    log('error', "Gave up on creating device");
                     return error(err);
                   }
                 }
@@ -123,14 +119,14 @@ Virtual gamepad class
           fs.writeSync(this.fd, ev_buffer, 0, ev_buffer.length, null);
         } catch (error1) {
           err = error1;
-          winston.log('error', "Error on writing ev_buffer");
+          log('error', "Error on writing ev_buffer");
           throw err;
         }
         try {
           return fs.writeSync(this.fd, ev_end_buffer, 0, ev_end_buffer.length, null);
         } catch (error2) {
           err = error2;
-          winston.log('error', "Error on writing ev_end_buffer");
+          log('error', "Error on writing ev_end_buffer");
           throw err;
         }
       }

@@ -1,3 +1,8 @@
+NEXT
+====
+  * Allow log level to be set with environment variable `LOGLEVEL`
+  * Adding timestamp to log output
+
 1.3.0
 =====
   * Introduced Changelog
