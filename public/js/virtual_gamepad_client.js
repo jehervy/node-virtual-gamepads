@@ -14,9 +14,14 @@ var initJoystick = function () {
         baseY: $(dirCursor).position().top,
         limitStickTravel: true,
         stickRadius: 50,
-        baseElement: dirCursor,
+        baseElement: $(dirCursor).clone()[0],
         container: container,
         strokeStyle: '#777f82'
+    });
+
+    $(window).resize(function () {
+        joystick._baseX = $(dirCursor).position().left;
+        joystick._baseY = $(dirCursor).position().top;
     });
 
     var lastDirection = "none";

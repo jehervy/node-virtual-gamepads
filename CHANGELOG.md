@@ -6,3 +6,4 @@ NEXT
   * Improved logging
   * Using module `forever-monitor` to restart the server if it crashes
     for some reason.
+  * Bug fixes
