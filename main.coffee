@@ -9,6 +9,8 @@ app  = express()
 http = require('http').Server(app)
 io = require('socket.io')(http)
 config = require './config.json'
+winston = require('winston')
+winston.level = config.logLevel
 
 gamepad_hub = require './app/virtual_gamepad_hub'
 gp_hub = new gamepad_hub()
@@ -39,28 +41,28 @@ io.on 'connection', (socket) ->
 
   socket.on 'disconnect', () ->
     if socket.gamePadId != undefined
-      console.info('Gamepad disconnected')
+      winston.log 'info', 'Gamepad disconnected'
       gp_hub.disconnectGamepad socket.gamePadId, () ->
     else if socket.keyBoardId != undefined
-      console.info('Keyboard disconnected')
+      winston.log 'info', 'Keyboard disconnected'
       kb_hub.disconnectKeyboard socket.keyBoardId, () ->
     else if socket.touchpadId != undefined
-      console.info('Touchpad disconnected')
+      winston.log 'info', 'Touchpad disconnected'
       tp_hub.disconnectTouchpad socket.touchpadId, () ->
     else
-      console.info('Unknown disconnect')
+      winston.log 'info', 'Unknown disconnect'
 
   socket.on 'connectGamepad', () ->
     gp_hub.connectGamepad (gamePadId) ->
       if gamePadId != -1
-        console.info('Gamepad connected')
+        winston.log 'info', 'Gamepad connected'
         socket.gamePadId = gamePadId
         socket.emit 'gamepadConnected', {padId: gamePadId}
       else
-        console.info('Gamepad connect failed')
+        winston.log 'info', 'Gamepad connect failed'
 
   socket.on 'padEvent', (data) ->
-    console.info('Pad event', data)
+    winston.log 'debug', 'Pad event', data
     if socket.gamePadId != undefined and data
       gp_hub.sendEvent socket.gamePadId, data
 
@@ -68,28 +70,28 @@ io.on 'connection', (socket) ->
   socket.on 'connectKeyboard', () ->
     kb_hub.connectKeyboard (keyBoardId) ->
       if keyBoardId != -1
-        console.info('Keyboard connected')
+        winston.log 'info', 'Keyboard connected'
         socket.keyBoardId = keyBoardId
         socket.emit 'keyboardConnected', {boardId: keyBoardId}
       else
-        console.info('Keyboard connect failed')
+        winston.log 'info', 'Keyboard connect failed'
 
   socket.on 'boardEvent', (data) ->
-    console.info('Board event', data)
+    winston.log 'debug', 'Board event', data
     if socket.keyBoardId != undefined and data
       kb_hub.sendEvent socket.keyBoardId, data
 
   socket.on 'connectTouchpad', () ->
     tp_hub.connectTouchpad (touchpadId) ->
       if touchpadId != -1
-        console.info('Touchpad connected')
+        winston.log 'info', 'Touchpad connected'
         socket.touchpadId = touchpadId
         socket.emit 'touchpadConnected', {touchpadId: touchpadId}
       else
-        console.info('Touchpad connect failed')
+        winston.log 'info', 'Touchpad connect failed'
 
   socket.on 'touchpadEvent', (data) ->
-    console.info('Touchpad event', data)
+    winston.log 'debug', 'Touchpad event', data
     if socket.touchpadId != undefined and data
       tp_hub.sendEvent socket.touchpadId, data
 
@@ -97,9 +99,9 @@ http.on 'error', (err) ->
   if err.hasOwnProperty('errno')
     switch err.errno
       when "EACCES"
-        console.error "You don't have permissions to open port", port, ".",
-          "For ports smaller than 1024, you need root privileges."
+        winston.log 'error', "You don't have permissions to open port", port,
+          ".", "For ports smaller than 1024, you need root privileges."
   throw err
 
 http.listen port, () ->
-    console.info "Listening on #{port}"
+    winston.log 'info', "Listening on #{port}"
