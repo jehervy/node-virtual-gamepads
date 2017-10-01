@@ -1,4 +1,6 @@
 {
   "port": 8080,
-  "useGamepadByDefault": false
+  "useGamepadByDefault": false,
+  "analog": true,
+  "logLevel": "info"
 }

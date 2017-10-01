@@ -8,6 +8,8 @@ ioctl = require 'ioctl'
 uinput = require '../lib/uinput'
 uinputStructs = require '../lib/uinput_structs'
 config = require '../config.json'
+winston = require('winston')
+winston.level = config.logLevel
 
 class virtual_keyboard
 
@@ -36,14 +38,14 @@ class virtual_keyboard
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            console.error err
+            winston.log 'error', err
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch error
-              console.error error
+              winston.log 'error', error
               fs.close @fd
               @fd = undefined
               @connect callback, error
@@ -56,7 +58,7 @@ class virtual_keyboard
       callback()
 
   sendEvent: (event) ->
-    console.log(event)
+    winston.log 'debug', event
     if @fd
       ev = new uinputStructs.input_event
       ev.type = event.type

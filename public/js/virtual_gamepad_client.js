@@ -14,53 +14,63 @@ var initJoystick = function () {
         baseY: $(dirCursor).position().top,
         limitStickTravel: true,
         stickRadius: 50,
-        baseElement: dirCursor,
+        baseElement: $(dirCursor).clone()[0],
         container: container,
         strokeStyle: '#777f82'
     });
 
-    var lastDirection = "none";
-    setInterval(function(){
-        /************
-        JOYSTICK MODE
-         ***********/
-        /*
-        if (joystick.left() || joystick.right() | joystick.up() || joystick.down()) {
-            lastDirection = "dir";
-            setDirection({x: parseInt(32767*joystick.deltaX()/50), y: parseInt(32767*joystick.deltaY()/50)});
-        } else if (lastDirection != "none"){
-            lastDirection = "none";
-            setDirection({x: 0, y: 0});
-        }
-        */
-        /************
-         DIRECTIONAL PAD MODE
-         ***********/
-        if(joystick.left()) {
-            if (lastDirection != "left") {
-                lastDirection = "left";
-                setDirection({direction: "left"});
-            }
-        } else if(joystick.right()) {
-            if (lastDirection != "right") {
-                lastDirection = "right";
-                setDirection({direction: "right"});
-            }
-        } else if(joystick.up()) {
-            if (lastDirection != "up") {
-                lastDirection = "up";
-                setDirection({direction: "up"});
-            }
-        } else if(joystick.down()) {
-            if (lastDirection != "down") {
-                lastDirection = "down";
-                setDirection({direction: "down"});
-            }
-        } else if (lastDirection != "none") {
-            lastDirection = "none";
-            setDirection({direction: "none"});
-        }
+    $(window).resize(function () {
+        joystick._baseX = $(dirCursor).position().left;
+        joystick._baseY = $(dirCursor).position().top;
+    });
 
+    var lastDirection = "none";
+    var analog = location.href.match(/\?analog/);
+    setInterval(function(){
+        if (analog) {
+            /************
+            JOYSTICK MODE
+             ***********/
+            if (joystick.left() || joystick.right() | joystick.up() || joystick.down()) {
+                lastDirection = "dir";
+                var xy = {
+                    x: Math.round(127*(joystick.deltaX()/50 + 1)),
+                    y: Math.round(127*(joystick.deltaY()/50 + 1))
+                };
+                setDirection(xy);
+            } else if (lastDirection != "none"){
+                lastDirection = "none";
+                setDirection({x: 127, y: 127});
+            }
+        } else {
+            /************
+             DIRECTIONAL PAD MODE
+             ***********/
+            if(joystick.left()) {
+                if (lastDirection != "left") {
+                    lastDirection = "left";
+                    setDirection({direction: "left"});
+                }
+            } else if(joystick.right()) {
+                if (lastDirection != "right") {
+                    lastDirection = "right";
+                    setDirection({direction: "right"});
+                }
+            } else if(joystick.up()) {
+                if (lastDirection != "up") {
+                    lastDirection = "up";
+                    setDirection({direction: "up"});
+                }
+            } else if(joystick.down()) {
+                if (lastDirection != "down") {
+                    lastDirection = "down";
+                    setDirection({direction: "down"});
+                }
+            } else if (lastDirection != "none") {
+                lastDirection = "none";
+                setDirection({direction: "none"});
+            }
+        }
     }, 1/30 * 1000);
 };
 

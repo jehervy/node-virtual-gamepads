@@ -26,5 +26,8 @@ require(["common"], function(common) {
 
                 return false;
             });
+            if (location.href.match(/\?analog$/)){
+                $('[href="gamepad.html"]').attr('href', 'gamepad.html?analog');
+            }
         });
 });

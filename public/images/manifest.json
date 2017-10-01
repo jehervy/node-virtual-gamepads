@@ -1,5 +1,5 @@
 {
-  "name": "Virtual Gamepad",
+  "name": "Virtual Controller",
   "icons": [
     {
       "src": "images/icons/launcher-icon-0-75x.png",
@@ -38,7 +38,7 @@
       "density": "4.0"
     }
   ],
-  "start_url": "/gamepad.html",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "landscape"
 }
