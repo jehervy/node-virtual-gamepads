@@ -16,6 +16,7 @@
     "ref": "git://github.com/TooTallNate/ref.git#924437f94b0f24323008990319871ffcbfc75cd",
     "ref-struct": "~1.1.0",
     "ref-array": "~1.2.0",
-    "winston": "~2.3.1"
+    "winston": "~2.3.1",
+    "forever-monitor": "~1.7.1"
   }
 }
