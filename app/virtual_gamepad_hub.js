@@ -6,15 +6,11 @@ Virtual gamepad hub class
  */
 
 (function() {
-  var config, gamepad, virtual_gamepad_hub, winston;
+  var gamepad, log, virtual_gamepad_hub;
 
   gamepad = require('./virtual_gamepad');
 
-  config = require('../config.json');
-
-  winston = require('winston');
-
-  winston.level = config.logLevel;
+  log = require('../lib/log');
 
   virtual_gamepad_hub = (function() {
     function virtual_gamepad_hub() {
@@ -37,10 +33,10 @@ Virtual gamepad hub class
         }
       }
       if (!freeSlot) {
-        winston.log('warning', "Couldn't add new Gamepad: no slot left.");
+        log('warning', "Couldn't add new Gamepad: no slot left.");
         return callback(-1);
       } else {
-        winston.log('info', 'Gamepad number', padId);
+        log('info', 'Gamepad number', padId);
         this.gamepads[padId] = new gamepad();
         return this.gamepads[padId].connect(function() {
           return callback(padId);

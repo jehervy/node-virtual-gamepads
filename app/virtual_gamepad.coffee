@@ -7,9 +7,7 @@ fs = require 'fs'
 ioctl = require 'ioctl'
 uinput = require '../lib/uinput'
 uinputStructs = require '../lib/uinput_structs'
-config = require '../config.json'
-winston = require('winston')
-winston.level = config.logLevel
+log = require '../lib/log'
 
 
 class virtual_gamepad
@@ -59,21 +57,21 @@ class virtual_gamepad
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            winston.log 'warn', "Error on init gamepad write:\n", err
+            log 'warn', "Error on init gamepad write:\n", err
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch err
-              winston.log 'error', "Error on gamepad create dev:\n", err
+              log 'error', "Error on gamepad create dev:\n", err
               fs.close @fd
               @fd = undefined
               if retry < 5
-                winston.log 'info', "Retry to create gamepad"
+                log 'info', "Retry to create gamepad"
                 @connect callback, error, retry+1
               else
-                winston.log 'error', "Gave up on creating device"
+                log 'error', "Gave up on creating device"
                 error err
 
   disconnect: (callback) ->
@@ -104,12 +102,12 @@ class virtual_gamepad
       try
         fs.writeSync @fd, ev_buffer, 0, ev_buffer.length, null
       catch err
-        winston.log 'error', "Error on writing ev_buffer"
+        log 'error', "Error on writing ev_buffer"
         throw err
       try
         fs.writeSync @fd, ev_end_buffer, 0, ev_end_buffer.length, null
       catch err
-        winston.log 'error', "Error on writing ev_end_buffer"
+        log 'error', "Error on writing ev_end_buffer"
         throw err
 
 

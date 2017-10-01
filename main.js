@@ -6,15 +6,11 @@ Virtual gamepad application
  */
 
 (function() {
-  var config, earlyDeathCount, forever, server, winston;
+  var earlyDeathCount, forever, log, server;
 
   forever = require('forever-monitor');
 
-  config = require('./config.json');
-
-  winston = require('winston');
-
-  winston.level = config.logLevel;
+  log = require('./lib/log');
 
   server = new forever.Monitor('server.js', {
     max: Infinity,
@@ -22,7 +18,7 @@ Virtual gamepad application
   });
 
   server.on('exit', function() {
-    return winston.log('error', 'server.js has exited (gave up to restart)');
+    return log('error', 'server.js has exited (gave up to restart)');
   });
 
   earlyDeathCount = 0;
@@ -30,17 +26,17 @@ Virtual gamepad application
   server.on('exit:code', function() {
     var diedAfter;
     diedAfter = Date.now() - server.ctime;
-    winston.log('info', 'diedAfter:', diedAfter);
+    log('info', 'diedAfter:', diedAfter);
     earlyDeathCount = diedAfter < 5000 ? earlyDeathCount + 1 : 0;
-    winston.log('info', 'earlyDeathCount:', earlyDeathCount);
+    log('info', 'earlyDeathCount:', earlyDeathCount);
     if (earlyDeathCount >= 3) {
-      winston.log('error', 'Died too often too fast.');
+      log('error', 'Died too often too fast.');
       return server.stop();
     }
   });
 
   server.on('restart', function() {
-    return winston.log('error', 'Forever restarting script for ' + server.times + ' time');
+    return log('error', 'Forever restarting script for ' + server.times + ' time');
   });
 
   server.start();
