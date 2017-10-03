@@ -6,7 +6,7 @@ Virtual gamepad application
  */
 
 (function() {
-  var earlyDeathCount, forever, log, server;
+  var earlyDeathCount, exiting, forever, i, len, log, ref, server, sig;
 
   forever = require('forever-monitor');
 
@@ -17,14 +17,19 @@ Virtual gamepad application
     args: []
   });
 
+  exiting = false;
+
   server.on('exit', function() {
-    return log('error', 'server.js has exited (gave up to restart)');
+    return log('warning', 'server.js has exited');
   });
 
   earlyDeathCount = 0;
 
   server.on('exit:code', function() {
     var diedAfter;
+    if (exiting) {
+      return;
+    }
     diedAfter = Date.now() - server.ctime;
     log('info', 'diedAfter:', diedAfter);
     earlyDeathCount = diedAfter < 5000 ? earlyDeathCount + 1 : 0;
@@ -38,6 +43,18 @@ Virtual gamepad application
   server.on('restart', function() {
     return log('error', 'Forever restarting script for ' + server.times + ' time');
   });
+
+  ref = ['SIGTERM', 'SIGINT', 'exit'];
+  for (i = 0, len = ref.length; i < len; i++) {
+    sig = ref[i];
+    process.on(sig, (function(s) {
+      return function() {
+        log('info', 'received', s);
+        exiting = true;
+        return server.stop();
+      };
+    })(sig));
+  }
 
   server.start();
 
