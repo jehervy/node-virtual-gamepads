@@ -11,11 +11,14 @@ server = new (forever.Monitor)('server.js', {
   args: [],
 });
 
+exiting = false
+
 server.on 'exit', ->
-  log 'error', 'server.js has exited (gave up to restart)';
+  log 'warning', 'server.js has exited';
 
 earlyDeathCount = 0
 server.on 'exit:code', ->
+  return if exiting
   diedAfter = Date.now() - server.ctime
   log 'info', 'diedAfter:', diedAfter
   earlyDeathCount = if diedAfter < 5000 then earlyDeathCount+1 else 0
@@ -26,5 +29,14 @@ server.on 'exit:code', ->
 
 server.on 'restart', ->
   log 'error' ,'Forever restarting script for ' + server.times + ' time'
+
+
+for sig in ['SIGTERM', 'SIGINT', 'exit']
+  process.on sig, ((s) -> ->
+    log 'info', 'received', s
+    exiting = true
+    server.stop()
+  )(sig)
+
 
 server.start();

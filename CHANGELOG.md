@@ -2,6 +2,9 @@ NEXT
 ====
   * Allow log level to be set with environment variable `LOGLEVEL`
   * Adding timestamp to log output
+  * Kill server process if main.js (monitoring) gets killed.
+    This will **not work for** `SIGKILL`. When you forcefully kill the
+    server, make sure to kill it's child processes as well if intended.
 
 1.3.0
 =====
