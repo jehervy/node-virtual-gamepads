@@ -44,14 +44,14 @@ class virtual_keyboard
               callback()
             catch error
               log 'error', error
-              fs.close @fd
+              fs.closeSync @fd
               @fd = undefined
               @connect callback, error
 
   disconnect: (callback) ->
     if @fd
       ioctl @fd, uinput.UI_DEV_DESTROY
-      fs.close @fd
+      fs.closeSync @fd
       @fd = undefined
       callback()
 

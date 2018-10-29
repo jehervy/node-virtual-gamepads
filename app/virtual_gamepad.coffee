@@ -65,7 +65,7 @@ class virtual_gamepad
               callback()
             catch err
               log 'error', "Error on gamepad create dev:\n", err
-              fs.close @fd
+              fs.closeSync @fd
               @fd = undefined
               if retry < 5
                 log 'info', "Retry to create gamepad"
@@ -77,7 +77,7 @@ class virtual_gamepad
   disconnect: (callback) ->
     if @fd
       ioctl @fd, uinput.UI_DEV_DESTROY
-      fs.close @fd
+      fs.closeSync @fd
       @fd = undefined
       callback()
 
