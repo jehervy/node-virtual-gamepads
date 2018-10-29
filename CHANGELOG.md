@@ -1,5 +1,6 @@
 NEXT
 ====
+  * Using `npm shrinkwrap` to fix dependency's versions
   * Allow log level to be set with environment variable `LOGLEVEL`
   * Adding timestamp to log output
   * Kill server process if main.js (monitoring) gets killed.
