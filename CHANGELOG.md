@@ -1,5 +1,6 @@
 NEXT
 ====
+  * Fix error when disconnecting clients (missing argument for fs.close)
   * Using `npm shrinkwrap` to fix dependency's versions
   * Allow log level to be set with environment variable `LOGLEVEL`
   * Adding timestamp to log output

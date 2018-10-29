@@ -78,7 +78,7 @@ Virtual gamepad class
                 } catch (error1) {
                   err = error1;
                   log('error', "Error on touchpad create dev:\n", err);
-                  fs.close(_this.fd);
+                  fs.closeSync(_this.fd);
                   _this.fd = void 0;
                   if (retry < 5) {
                     log('info', "Retry to create touchpad");
@@ -98,7 +98,7 @@ Virtual gamepad class
     virtual_touchpad.prototype.disconnect = function(callback) {
       if (this.fd) {
         ioctl(this.fd, uinput.UI_DEV_DESTROY);
-        fs.close(this.fd);
+        fs.closeSync(this.fd);
         this.fd = void 0;
         return callback();
       }

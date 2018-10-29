@@ -71,7 +71,7 @@ class virtual_touchpad
               callback()
             catch err
               log 'error', "Error on touchpad create dev:\n", err
-              fs.close @fd
+              fs.closeSync @fd
               @fd = undefined
               if retry < 5
                 log 'info', "Retry to create touchpad"
@@ -83,7 +83,7 @@ class virtual_touchpad
   disconnect: (callback) ->
     if @fd
       ioctl @fd, uinput.UI_DEV_DESTROY
-      fs.close @fd
+      fs.closeSync @fd
       @fd = undefined
       callback()
 

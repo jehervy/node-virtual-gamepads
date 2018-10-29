@@ -53,7 +53,7 @@ Virtual keyboard class
                 } catch (error1) {
                   error = error1;
                   log('error', error);
-                  fs.close(_this.fd);
+                  fs.closeSync(_this.fd);
                   _this.fd = void 0;
                   return _this.connect(callback, error);
                 }
@@ -67,7 +67,7 @@ Virtual keyboard class
     virtual_keyboard.prototype.disconnect = function(callback) {
       if (this.fd) {
         ioctl(this.fd, uinput.UI_DEV_DESTROY);
-        fs.close(this.fd);
+        fs.closeSync(this.fd);
         this.fd = void 0;
         return callback();
       }
