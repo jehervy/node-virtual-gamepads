@@ -16,6 +16,7 @@ class virtual_keyboard
   connect: (callback, error) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
+        log 'error', "Error on opening /dev/uinput:\n", err
         error err
       else
         @fd = fd
@@ -36,14 +37,14 @@ class virtual_keyboard
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            log 'error', err
+            log 'error', "Error on init keyboard write:\n", err
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch error
-              log 'error', error
+              log 'error', "Error on keyboard dev creation:\n", err
               fs.closeSync @fd
               @fd = undefined
               @connect callback, error

@@ -15,6 +15,7 @@ class virtual_touchpad
   connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
+        log 'error', "Error on opening /dev/uinput:\n", err
         error err
       else
         @fd = fd
@@ -63,7 +64,7 @@ class virtual_touchpad
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            log 'warn', "Error on init touchpad write:\n", err
+            log 'error', "Error on init touchpad write:\n", err
             error err
           else
             try

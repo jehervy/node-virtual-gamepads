@@ -28,6 +28,7 @@ Virtual gamepad class
         return function(err, fd) {
           var uidev, uidev_buffer;
           if (err) {
+            log('error', "Error on opening /dev/uinput:\n", err);
             return error(err);
           } else {
             _this.fd = fd;
@@ -69,7 +70,7 @@ Virtual gamepad class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                log('warn', "Error on init touchpad write:\n", err);
+                log('error', "Error on init touchpad write:\n", err);
                 return error(err);
               } else {
                 try {

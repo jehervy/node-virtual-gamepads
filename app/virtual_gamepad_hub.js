@@ -33,14 +33,15 @@ Virtual gamepad hub class
         }
       }
       if (!freeSlot) {
-        log('warning', "Couldn't add new Gamepad: no slot left.");
+        log('warning', "Couldn't add new gamepad: no slot left.");
         return callback(-1);
       } else {
-        log('info', 'Gamepad number', padId);
+        log('info', 'Creating and connecting to gamepad number', padId);
         this.gamepads[padId] = new gamepad();
         return this.gamepads[padId].connect(function() {
           return callback(padId);
         }, function(err) {
+          log('error', "Couldn't connect to gamepad:\n", err);
           return callback(-1);
         });
       }

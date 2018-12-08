@@ -18,10 +18,12 @@ Virtual keyboard hub class
     virtual_keyboard_hub.prototype.connectKeyboard = function(callback) {
       var boardId;
       boardId = this.keyboards.length;
+      log('info', 'Creating and connecting to keyboard number', boardId);
       this.keyboards[boardId] = new keyboard();
       return this.keyboards[boardId].connect(function() {
         return callback(boardId);
       }, function(err) {
+        log('error', "Couldn't connect to keyboard:\n", err);
         return callback(-1);
       });
     };

@@ -7,6 +7,7 @@ NEXT
   * Kill server process if main.js (monitoring) gets killed.
     This will **not work for** `SIGKILL`. When you forcefully kill the
     server, make sure to kill it's child processes as well if intended.
+  * Improve logging
 
 1.3.0
 =====

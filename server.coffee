@@ -54,14 +54,14 @@ io.on 'connection', (socket) ->
   socket.on 'connectGamepad', () ->
     gp_hub.connectGamepad (gamePadId) ->
       if gamePadId != -1
-        log 'info', 'Gamepad connected'
+        log 'info', 'connectGamepad: success'
         socket.gamePadId = gamePadId
         socket.emit 'gamepadConnected', {padId: gamePadId}
       else
-        log 'info', 'Gamepad connect failed'
+        log 'warning', 'connectGamepad: failed'
 
   socket.on 'padEvent', (data) ->
-    log 'debug', 'Pad event', data
+    log 'debug', 'padEvent', data
     if socket.gamePadId != undefined and data
       gp_hub.sendEvent socket.gamePadId, data
 
@@ -69,28 +69,28 @@ io.on 'connection', (socket) ->
   socket.on 'connectKeyboard', () ->
     kb_hub.connectKeyboard (keyBoardId) ->
       if keyBoardId != -1
-        log 'info', 'Keyboard connected'
+        log 'info', 'connectKeyboard: success'
         socket.keyBoardId = keyBoardId
         socket.emit 'keyboardConnected', {boardId: keyBoardId}
       else
-        log 'info', 'Keyboard connect failed'
+        log 'info', 'connectKeyboard: failed'
 
   socket.on 'boardEvent', (data) ->
-    log 'debug', 'Board event', data
+    log 'debug', 'boardEvent', data
     if socket.keyBoardId != undefined and data
       kb_hub.sendEvent socket.keyBoardId, data
 
   socket.on 'connectTouchpad', () ->
     tp_hub.connectTouchpad (touchpadId) ->
       if touchpadId != -1
-        log 'info', 'Touchpad connected'
+        log 'info', 'connectTouchpad: success'
         socket.touchpadId = touchpadId
         socket.emit 'touchpadConnected', {touchpadId: touchpadId}
       else
-        log 'info', 'Touchpad connect failed'
+        log 'info', 'connectTouchpad: failed'
 
   socket.on 'touchpadEvent', (data) ->
-    log 'debug', 'Touchpad event', data
+    log 'debug', 'touchpadEvent', data
     if socket.touchpadId != undefined and data
       tp_hub.sendEvent socket.touchpadId, data
 

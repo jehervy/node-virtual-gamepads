@@ -13,10 +13,12 @@ class virtual_touchpad_hub
     touchpadId = @touchpads.length
 
     # Create and connect the touchpad
+    log 'info', 'Creating and connecting to touchpad number', touchpadId
     @touchpads[touchpadId] = new touchpad()
     @touchpads[touchpadId].connect () ->
       callback touchpadId
     , (err) ->
+      log 'error', "Couldn't connect to touchpad:\n", err
       callback -1
 
   disconnectTouchpad: (touchpadId, callback) ->

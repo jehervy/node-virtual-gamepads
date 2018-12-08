@@ -17,10 +17,12 @@ Virtual touchpad hub class
     virtual_touchpad_hub.prototype.connectTouchpad = function(callback) {
       var touchpadId;
       touchpadId = this.touchpads.length;
+      log('info', 'Creating and connecting to touchpad number', touchpadId);
       this.touchpads[touchpadId] = new touchpad();
       return this.touchpads[touchpadId].connect(function() {
         return callback(touchpadId);
       }, function(err) {
+        log('error', "Couldn't connect to touchpad:\n", err);
         return callback(-1);
       });
     };
