@@ -13,7 +13,7 @@ class virtual_keyboard
 
   constructor: () ->
 
-  connect: (callback, error) ->
+  connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
         log 'error', "Error on opening /dev/uinput:\n", err
@@ -47,7 +47,12 @@ class virtual_keyboard
               log 'error', "Error on keyboard dev creation:\n", err
               fs.closeSync @fd
               @fd = undefined
-              @connect callback, error
+              if retry < 5
+                log 'info', "Retry to create keyboard"
+                @connect callback, error, retry+1
+              else
+                log 'error', "Gave up on creating device"
+                error err
 
   disconnect: (callback) ->
     if @fd

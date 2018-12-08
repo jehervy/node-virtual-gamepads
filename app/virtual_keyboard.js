@@ -21,7 +21,10 @@ Virtual keyboard class
   virtual_keyboard = (function() {
     function virtual_keyboard() {}
 
-    virtual_keyboard.prototype.connect = function(callback, error) {
+    virtual_keyboard.prototype.connect = function(callback, error, retry) {
+      if (retry == null) {
+        retry = 0;
+      }
       return fs.open('/dev/uinput', 'w+', (function(_this) {
         return function(err, fd) {
           var i, j, uidev, uidev_buffer;
@@ -56,7 +59,13 @@ Virtual keyboard class
                   log('error', "Error on keyboard dev creation:\n", err);
                   fs.closeSync(_this.fd);
                   _this.fd = void 0;
-                  return _this.connect(callback, error);
+                  if (retry < 5) {
+                    log('info', "Retry to create keyboard");
+                    return _this.connect(callback, error, retry + 1);
+                  } else {
+                    log('error', "Gave up on creating device");
+                    return error(err);
+                  }
                 }
               }
             });

@@ -8,6 +8,8 @@ NEXT
     This will **not work for** `SIGKILL`. When you forcefully kill the
     server, make sure to kill it's child processes as well if intended.
   * Improve logging
+  * Bug fixes:
+    * Crash on failing keyboard initialization
 
 1.3.0
 =====
