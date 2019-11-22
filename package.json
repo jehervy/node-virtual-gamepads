@@ -10,7 +10,7 @@
     "url": "https://github.com/miroof/node-virtual-gamepad"
   },
   "dependencies": {
-    "express": "~3.3.5",
+    "express": "~4.17.1",
     "ioctl": "~2.0.1",
     "socket.io": "~1.7.4",
     "ref": "git://github.com/TooTallNate/ref.git#924437f94b0f24323008990319871ffcbfc75cd",
