@@ -47,23 +47,24 @@ var initJoystick = function () {
              DIRECTIONAL PAD MODE
              ***********/
 
-             var gamepad = controllers[Object.keys(controllers)[0]];
-            if(joystick.left() || gamepad.depadState == "left") {
+            var gamepad = controllers[Object.keys(controllers)[0]] || {};
+            // if(gamepad) console.log(gamepad)
+            if(joystick.left() || gamepad.dpadState == "left") {
                 if (lastDirection != "left") {
                     lastDirection = "left";
                     setDirection({direction: "left"});
                 }
-            } else if(joystick.right() || gamepad.depadState == "right") {
+            } else if(joystick.right() || gamepad.dpadState == "right") {
                 if (lastDirection != "right") {
                     lastDirection = "right";
                     setDirection({direction: "right"});
                 }
-            } else if(joystick.up() || gamepad.depadState == "up") {
+            } else if(joystick.up() || gamepad.dpadState == "up") {
                 if (lastDirection != "up") {
                     lastDirection = "up";
                     setDirection({direction: "up"});
                 }
-            } else if(joystick.down() || gamepad.depadState == "down") {
+            } else if(joystick.down() || gamepad.dpadState == "down") {
                 if (lastDirection != "down") {
                     lastDirection = "down";
                     setDirection({direction: "down"});

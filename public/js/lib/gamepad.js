@@ -14,6 +14,7 @@ var rAF = window.mozRequestAnimationFrame ||
   window.requestAnimationFrame;
 
 function connecthandler(e) {
+    console.log("Connected")
   addgamepad(e.gamepad);
 }
 function addgamepad(gamepad) {
@@ -48,6 +49,11 @@ function updateStatus() {
     var controller = controllers[j];
     for (var i=0; i<controller.buttons.length; i++) {
       var val = controller.buttons[i];
+      var pressed = val == 1.0;
+      if (typeof(val) == "object") {
+        pressed = val.pressed;
+        val = val.value;
+      }
       if (pressed) {
         switch(i){
           case 12:
@@ -63,14 +69,13 @@ function updateStatus() {
           controller.dpadState = "left";
             break;
           default:
-            controller.dpadState = null;
+            $("#"+buttonMap[i]).trigger('touchstart');
+            wasPressed[i]=true;
             break;
         }
-        $("#"+buttonMap[i]).trigger('mousedown');
-        wasPressed[i]=true;
       } else {
         if(wasPressed[i]){
-          $("#"+buttonMap[i]).trigger('mouseup');
+          $("#"+buttonMap[i]).trigger('touchend');
           wasPressed[i]=false;
         }
       }
