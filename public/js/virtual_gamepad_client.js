@@ -78,6 +78,109 @@ var initJoystick = function () {
 };
 
 /*************************
+ INITIALIZE GAMEPADS
+ ************************/
+var controllers = {};
+var rAF = window.requestAnimationFrame;
+
+var buttonMap = {
+    0: "btnX",
+    1: "btnA",
+    2: "btnB",
+    3: "btnY",
+    4: "btnLT",
+    5: "btnRT",
+    6: "btnLTT",
+    7: "btnRTT",
+    8: "btnSELECT",
+    9: "btnSTART",
+}
+
+var wasPressed = [];
+
+function updateStatus() {
+    scangamepads();
+    // loop through all controllers
+    for (j in controllers) {
+        var controller = controllers[j];
+        // loop through each button
+        for (var i = 0; i < controller.buttons.length; i++) {
+            var val = controller.buttons[i];
+            var pressed = val == 1.0;
+            if (typeof (val) == "object") {
+                pressed = val.pressed;
+                val = val.value;
+            }
+            if (pressed) {
+                //check for dpad buttons
+                switch (i) {
+                    case 12:
+                        controller.dpadState = "up";
+                        break;
+                    case 13:
+                        controller.dpadState = "right";
+                        break;
+                    case 14:
+                        controller.dpadState = "down";
+                        break;
+                    case 15:
+                        controller.dpadState = "left";
+                        break;
+                    default:
+                        $("#" + buttonMap[i]).trigger('touchstart');
+                        wasPressed[i] = true;
+                        break;
+                }
+            } else {
+                if (wasPressed[i]) {
+                    $("#" + buttonMap[i]).trigger('touchend');
+                    wasPressed[i] = false;
+                }
+            }
+        }
+
+        for (var i = 0; i < controller.axes.length; i++) {
+            var a = controller.axes[i];
+        }
+    }
+    rAF(updateStatus);
+}
+
+
+function scangamepads() {
+    var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+    for (var i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+            if (!(gamepads[i].index in controllers)) {
+                addgamepad(gamepads[i]);
+            } else {
+                controllers[gamepads[i].index] = gamepads[i];
+            }
+        }
+    }
+}
+
+window.addEventListener("gamepadconnected", connecthandler);
+window.addEventListener("gamepaddisconnected", disconnecthandler);
+
+function connecthandler(e) {
+    addgamepad(e.gamepad);
+}
+
+function addgamepad(gamepad) {
+    controllers[gamepad.index] = gamepad;
+    rAF(updateStatus);
+}
+
+function disconnecthandler(e) {
+    removegamepad(e.gamepad);
+}
+
+function removegamepad(gamepad) {
+    delete controllers[gamepad.index];
+}
+
+/*************************
  INITIALIZE SLOT INDICATOR
  ************************/
 var indicatorOn;
