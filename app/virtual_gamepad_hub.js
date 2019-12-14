@@ -44,7 +44,8 @@ Virtual gamepad hub class
         this.gamepads[padId] = new gamepad();
         return this.gamepads[padId].connect(function() {
           return callback(padId);
-        }, function(err) {
+        }, (err)=> {
+          this.gamepads[padId] = void 0;
           return callback(-1);
         });
       }
