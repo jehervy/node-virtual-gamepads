@@ -81,7 +81,7 @@ Virtual gamepad application
       });
     });
     socket.on('padEvent', function(data) {
-      log('debug', 'padEvent', data);
+      log('debug', 'padEvent ' + JSON.stringify(data));
       if (socket.gamePadId !== void 0 && data) {
         return gp_hub.sendEvent(socket.gamePadId, data);
       }
@@ -100,7 +100,7 @@ Virtual gamepad application
       });
     });
     socket.on('boardEvent', function(data) {
-      log('debug', 'boardEvent', data);
+      log('debug', 'boardEvent ' + JSON.stringify(data));
       if (socket.keyBoardId !== void 0 && data) {
         return kb_hub.sendEvent(socket.keyBoardId, data);
       }
@@ -119,7 +119,7 @@ Virtual gamepad application
       });
     });
     return socket.on('touchpadEvent', function(data) {
-      log('debug', 'touchpadEvent', data);
+      log('debug', 'touchpadEvent ' + JSON.stringify(data));
       if (socket.touchpadId !== void 0 && data) {
         return tp_hub.sendEvent(socket.touchpadId, data);
       }
@@ -130,7 +130,7 @@ Virtual gamepad application
     if (err.hasOwnProperty('errno')) {
       switch (err.errno) {
         case "EACCES":
-          log('error', "You don't have permissions to open port", port, ".", "For ports smaller than 1024, you need root privileges.");
+          log('error', "You don't have permissions to open port " + port + ". " + "For ports smaller than 1024, you need root privileges.");
       }
     }
     throw err;

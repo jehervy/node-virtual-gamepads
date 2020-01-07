@@ -29,7 +29,7 @@ Virtual gamepad class
         return function(err, fd) {
           var uidev, uidev_buffer;
           if (err) {
-            log('error', "Error on opening /dev/uinput:\n", err);
+            log('error', "Error on opening /dev/uinput:\n" + JSON.stringify(err));
             return error(err);
           } else {
             _this.fd = fd;
@@ -64,7 +64,7 @@ Virtual gamepad class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                log('error', "Error on init gamepad write:\n", err);
+                log('error', "Error on init gamepad write:\n" + JSON.stringify(err));
                 return error(err);
               } else {
                 try {
@@ -72,7 +72,7 @@ Virtual gamepad class
                   return callback();
                 } catch (error1) {
                   err = error1;
-                  log('error', "Error on gamepad dev creation:\n", err);
+                  log('error', "Error on gamepad dev creation:\n" + JSON.stringify(err));
                   fs.closeSync(_this.fd);
                   _this.fd = void 0;
                   if (retry < 5) {

@@ -37,7 +37,6 @@ app.use(express.static(__dirname + '/public'));
 
 # socket io
 io.on 'connection', (socket) ->
-
   socket.on 'disconnect', () ->
     if socket.gamePadId != undefined
       log 'info', 'Gamepad disconnected'
@@ -61,7 +60,7 @@ io.on 'connection', (socket) ->
         log 'warning', 'connectGamepad: failed'
 
   socket.on 'padEvent', (data) ->
-    log 'debug', 'padEvent', data
+    log 'debug', 'padEvent '+ JSON.stringify(data)
     if socket.gamePadId != undefined and data
       gp_hub.sendEvent socket.gamePadId, data
 
@@ -76,7 +75,7 @@ io.on 'connection', (socket) ->
         log 'info', 'connectKeyboard: failed'
 
   socket.on 'boardEvent', (data) ->
-    log 'debug', 'boardEvent', data
+    log 'debug', 'boardEvent '+ JSON.stringify(data)
     if socket.keyBoardId != undefined and data
       kb_hub.sendEvent socket.keyBoardId, data
 
@@ -90,7 +89,7 @@ io.on 'connection', (socket) ->
         log 'info', 'connectTouchpad: failed'
 
   socket.on 'touchpadEvent', (data) ->
-    log 'debug', 'touchpadEvent', data
+    log 'debug', 'touchpadEvent '+ JSON.stringify(data)
     if socket.touchpadId != undefined and data
       tp_hub.sendEvent socket.touchpadId, data
 
@@ -98,8 +97,8 @@ http.on 'error', (err) ->
   if err.hasOwnProperty('errno')
     switch err.errno
       when "EACCES"
-       log 'error', "You don't have permissions to open port", port,
-          ".", "For ports smaller than 1024, you need root privileges."
+       log 'error', "You don't have permissions to open port " + port +
+          ". " + "For ports smaller than 1024, you need root privileges."
   throw err
 
 http.listen port, () ->

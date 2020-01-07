@@ -17,7 +17,7 @@ class virtual_gamepad
   connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
-        log 'error', "Error on opening /dev/uinput:\n", err
+        log 'error', "Error on opening /dev/uinput:\n" + JSON.stringify(err)
         error err
       else
         @fd = fd
@@ -58,14 +58,14 @@ class virtual_gamepad
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            log 'error', "Error on init gamepad write:\n", err
+            log 'error', "Error on init gamepad write:\n" + JSON.stringify(err)
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch err
-              log 'error', "Error on gamepad dev creation:\n", err
+              log 'error', "Error on gamepad dev creation:\n" + JSON.stringify(err)
               fs.closeSync @fd
               @fd = undefined
               if retry < 5

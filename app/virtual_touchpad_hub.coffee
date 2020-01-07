@@ -3,6 +3,7 @@ Virtual touchpad hub class
 ###
 
 touchpad = require './virtual_touchpad'
+log = require '../lib/log'
 
 class virtual_touchpad_hub
 
@@ -13,12 +14,12 @@ class virtual_touchpad_hub
     touchpadId = @touchpads.length
 
     # Create and connect the touchpad
-    log 'info', 'Creating and connecting to touchpad number', touchpadId
+    log 'info', 'Creating and connecting to touchpad number ' + touchpadId
     @touchpads[touchpadId] = new touchpad()
     @touchpads[touchpadId].connect () ->
       callback touchpadId
     , (err) ->
-      log 'error', "Couldn't connect to touchpad:\n", err
+      log 'error', "Couldn't connect to touchpad:\n" + JSON.stringify(err)
       callback -1
 
   disconnectTouchpad: (touchpadId, callback) ->

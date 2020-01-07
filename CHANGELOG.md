@@ -10,6 +10,7 @@ NEXT
   * Improve logging
   * Bug fixes:
     * Crash on failing keyboard initialization
+  * Update dependencies
 
 1.3.0
 =====

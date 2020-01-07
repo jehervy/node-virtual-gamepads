@@ -4,6 +4,7 @@ Virtual keyboard hub class
 ###
 
 keyboard = require './virtual_keyboard'
+log = require '../lib/log'
 
 class virtual_keyboard_hub
 
@@ -14,12 +15,12 @@ class virtual_keyboard_hub
     boardId = @keyboards.length
 
     # Create and connect the keyboard
-    log 'info', 'Creating and connecting to keyboard number', boardId
+    log 'info', 'Creating and connecting to keyboard number' + boardId
     @keyboards[boardId] = new keyboard()
     @keyboards[boardId].connect () ->
       callback boardId
     , (err) ->
-      log 'error', "Couldn't connect to keyboard:\n", err
+      log 'error', "Couldn't connect to keyboard:\n" + JSON.stringify(err)
       callback -1
 
   disconnectKeyboard: (boardId, callback) ->

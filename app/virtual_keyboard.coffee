@@ -16,7 +16,7 @@ class virtual_keyboard
   connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
-        log 'error', "Error on opening /dev/uinput:\n", err
+        log 'error', "Error on opening /dev/uinput:\n" + JSON.stringify(err)
         error err
       else
         @fd = fd
@@ -37,14 +37,14 @@ class virtual_keyboard
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            log 'error', "Error on init keyboard write:\n", err
+            log 'error', "Error on init keyboard write:\n" + JSON.stringify(err)
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch error
-              log 'error', "Error on keyboard dev creation:\n", err
+              log 'error', "Error on keyboard dev creation:\n" + JSON.stringify(err)
               fs.closeSync @fd
               @fd = undefined
               if retry < 5

@@ -36,13 +36,13 @@ Virtual gamepad hub class
         log('warning', "Couldn't add new gamepad: no slot left.");
         return callback(-1);
       } else {
-        log('info', 'Creating and connecting to gamepad number', padId);
+        log('info', 'Creating and connecting to gamepad number ' + padId);
         this.gamepads[padId] = new gamepad();
         return this.gamepads[padId].connect(function() {
           return callback(padId);
         }, function(err) {
           this.gamepads[padId] = void 0;
-          log('error', "Couldn't connect to gamepad:\n", err);
+          log('error', "Couldn't connect to gamepad:\n" + JSON.stringify(err));
           return callback(-1);
         });
       }

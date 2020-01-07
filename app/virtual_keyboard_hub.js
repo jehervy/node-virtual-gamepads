@@ -6,9 +6,11 @@ Virtual keyboard hub class
  */
 
 (function() {
-  var keyboard, virtual_keyboard_hub;
+  var keyboard, log, virtual_keyboard_hub;
 
   keyboard = require('./virtual_keyboard');
+
+  log = require('../lib/log');
 
   virtual_keyboard_hub = (function() {
     function virtual_keyboard_hub() {
@@ -18,12 +20,12 @@ Virtual keyboard hub class
     virtual_keyboard_hub.prototype.connectKeyboard = function(callback) {
       var boardId;
       boardId = this.keyboards.length;
-      log('info', 'Creating and connecting to keyboard number', boardId);
+      log('info', 'Creating and connecting to keyboard number' + boardId);
       this.keyboards[boardId] = new keyboard();
       return this.keyboards[boardId].connect(function() {
         return callback(boardId);
       }, function(err) {
-        log('error', "Couldn't connect to keyboard:\n", err);
+        log('error', "Couldn't connect to keyboard:\n" + JSON.stringify(err));
         return callback(-1);
       });
     };
