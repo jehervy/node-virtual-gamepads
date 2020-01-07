@@ -29,3 +29,11 @@ this may be caused by running on ubuntu or a system that does not come with
 header-files (dev-packages) pre-installed. Try:
 
     sudo apt-get install libudev-dev
+
+
+
+Nothing helped
+--------------
+If nothing helped see if you can find you problem in the
+[issue section](https://github.com/miroof/node-virtual-gamepads/issues?utf8=%E2%9C%93&q=).  
+Still no solution? Open an issue.
