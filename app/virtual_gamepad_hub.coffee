@@ -4,9 +4,7 @@ Virtual gamepad hub class
 ###
 
 gamepad = require './virtual_gamepad'
-config = require '../config.json'
-winston = require('winston')
-winston.level = config.logLevel
+log = require '../lib/log'
 
 class virtual_gamepad_hub
 
@@ -28,15 +26,17 @@ class virtual_gamepad_hub
         padId++
 
     if !freeSlot
-      winston.log('warning', "Couldn't add new Gamepad: no slot left.")
+      log 'warning', "Couldn't add new gamepad: no slot left."
       callback -1
     else
       # Create and connect the gamepad
-      winston.log('info', 'Gamepad number', padId)
+      log 'info', 'Creating and connecting to gamepad number ' + padId
       @gamepads[padId] = new gamepad()
       @gamepads[padId].connect () ->
         callback padId
       , (err) ->
+        @gamepads[padId] = undefined
+        log 'error', "Couldn't connect to gamepad:\n" + JSON.stringify(err)
         callback -1
 
   disconnectGamepad: (padId, callback) ->

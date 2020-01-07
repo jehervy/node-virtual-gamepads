@@ -7,15 +7,11 @@ If you get errors on
 
     npm install
 
-try
+make sure you have node version 9 installed. For Ubuntu this might be
 
     sudo apt-get install nodejs-legacy
-    sudo npm install
-   
-If that doesn't help, check the verions of `node` and `npm`.
-Many Linux distributions come with very old versions. Sometimes an
-updated can fix the problem.
 
+Or check out [nvm](https://github.com/nvm-sh/nvm).  
 
 
 Error: EINVAL, invalid argument
