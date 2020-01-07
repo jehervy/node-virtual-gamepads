@@ -18,5 +18,8 @@
     "ref-array": "~1.2.0",
     "winston": "~2.3.1",
     "forever-monitor": "~1.7.1"
+  },
+  "devDependencies": {
+    "coffeescript": "1.10.0"
   }
 }
