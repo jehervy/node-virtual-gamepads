@@ -41,6 +41,7 @@ Virtual gamepad hub class
         return this.gamepads[padId].connect(function() {
           return callback(padId);
         }, function(err) {
+          this.gamepads[padId] = void 0;
           log('error', "Couldn't connect to gamepad:\n", err);
           return callback(-1);
         });

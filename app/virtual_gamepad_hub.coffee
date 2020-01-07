@@ -35,6 +35,7 @@ class virtual_gamepad_hub
       @gamepads[padId].connect () ->
         callback padId
       , (err) ->
+        @gamepads[padId] = undefined
         log 'error', "Couldn't connect to gamepad:\n", err
         callback -1
 
