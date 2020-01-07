@@ -16,6 +16,9 @@ This application is only compatible with Linux OS with the **uinput** kernel mod
 
 Installation
 ------------
+**NOTE**: This application is only tested with node version 9. 10 and 12 are known
+to cause trouble because of the dependencies.
+
     git clone https://github.com/miroof/node-virtual-gamepads
     cd node-virtual-gamepads
     npm install
