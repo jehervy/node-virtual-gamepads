@@ -1,7 +1,7 @@
 1.4.0
 =====
   * Fix error when disconnecting clients (missing argument for fs.close)
-  * Using `npm shrinkwrap` to fix dependency's versions
+  * Using npm lock file to fix dependencies' versions
   * Allow log level to be set with environment variable `LOGLEVEL`
   * Adding timestamp to log output
   * Kill server process if main.js (monitoring) gets killed.
