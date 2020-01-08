@@ -31,9 +31,9 @@ Virtual gamepad application
       return;
     }
     diedAfter = Date.now() - server.ctime;
-    log('info', 'diedAfter:', diedAfter);
+    log('info', 'diedAfter: ' + diedAfter);
     earlyDeathCount = diedAfter < 5000 ? earlyDeathCount + 1 : 0;
-    log('info', 'earlyDeathCount:', earlyDeathCount);
+    log('info', 'earlyDeathCount: ' + earlyDeathCount);
     if (earlyDeathCount >= 3) {
       log('error', 'Died too often too fast.');
       return server.stop();
@@ -49,7 +49,7 @@ Virtual gamepad application
     sig = ref[i];
     process.on(sig, (function(s) {
       return function() {
-        log('info', 'received', s);
+        log('info', 'received ' + s);
         exiting = true;
         return server.stop();
       };

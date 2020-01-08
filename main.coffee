@@ -20,9 +20,9 @@ earlyDeathCount = 0
 server.on 'exit:code', ->
   return if exiting
   diedAfter = Date.now() - server.ctime
-  log 'info', 'diedAfter:', diedAfter
+  log 'info', 'diedAfter: ' + diedAfter
   earlyDeathCount = if diedAfter < 5000 then earlyDeathCount+1 else 0
-  log 'info', 'earlyDeathCount:', earlyDeathCount
+  log 'info', 'earlyDeathCount: ' + earlyDeathCount
   if earlyDeathCount >= 3
     log 'error', 'Died too often too fast.'
     server.stop()
@@ -33,7 +33,7 @@ server.on 'restart', ->
 
 for sig in ['SIGTERM', 'SIGINT', 'exit']
   process.on sig, ((s) -> ->
-    log 'info', 'received', s
+    log 'info', 'received ' + s
     exiting = true
     server.stop()
   )(sig)

@@ -70,18 +70,18 @@ Virtual gamepad application
     socket.on('connectGamepad', function() {
       return gp_hub.connectGamepad(function(gamePadId) {
         if (gamePadId !== -1) {
-          log('info', 'Gamepad connected');
+          log('info', 'connectGamepad: success');
           socket.gamePadId = gamePadId;
           return socket.emit('gamepadConnected', {
             padId: gamePadId
           });
         } else {
-          return log('info', 'Gamepad connect failed');
+          return log('warning', 'connectGamepad: failed');
         }
       });
     });
     socket.on('padEvent', function(data) {
-      log('debug', 'Pad event', data);
+      log('debug', 'padEvent ' + JSON.stringify(data));
       if (socket.gamePadId !== void 0 && data) {
         return gp_hub.sendEvent(socket.gamePadId, data);
       }
@@ -89,18 +89,18 @@ Virtual gamepad application
     socket.on('connectKeyboard', function() {
       return kb_hub.connectKeyboard(function(keyBoardId) {
         if (keyBoardId !== -1) {
-          log('info', 'Keyboard connected');
+          log('info', 'connectKeyboard: success');
           socket.keyBoardId = keyBoardId;
           return socket.emit('keyboardConnected', {
             boardId: keyBoardId
           });
         } else {
-          return log('info', 'Keyboard connect failed');
+          return log('info', 'connectKeyboard: failed');
         }
       });
     });
     socket.on('boardEvent', function(data) {
-      log('debug', 'Board event', data);
+      log('debug', 'boardEvent ' + JSON.stringify(data));
       if (socket.keyBoardId !== void 0 && data) {
         return kb_hub.sendEvent(socket.keyBoardId, data);
       }
@@ -108,18 +108,18 @@ Virtual gamepad application
     socket.on('connectTouchpad', function() {
       return tp_hub.connectTouchpad(function(touchpadId) {
         if (touchpadId !== -1) {
-          log('info', 'Touchpad connected');
+          log('info', 'connectTouchpad: success');
           socket.touchpadId = touchpadId;
           return socket.emit('touchpadConnected', {
             touchpadId: touchpadId
           });
         } else {
-          return log('info', 'Touchpad connect failed');
+          return log('info', 'connectTouchpad: failed');
         }
       });
     });
     return socket.on('touchpadEvent', function(data) {
-      log('debug', 'Touchpad event', data);
+      log('debug', 'touchpadEvent ' + JSON.stringify(data));
       if (socket.touchpadId !== void 0 && data) {
         return tp_hub.sendEvent(socket.touchpadId, data);
       }
@@ -130,7 +130,7 @@ Virtual gamepad application
     if (err.hasOwnProperty('errno')) {
       switch (err.errno) {
         case "EACCES":
-          log('error', "You don't have permissions to open port", port, ".", "For ports smaller than 1024, you need root privileges.");
+          log('error', "You don't have permissions to open port " + port + ". " + "For ports smaller than 1024, you need root privileges.");
       }
     }
     throw err;

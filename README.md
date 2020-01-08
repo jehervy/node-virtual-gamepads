@@ -1,7 +1,6 @@
 # node-virtual-gamepads - Recalbox integration
 
-This nodejs application provides the possibility to use your smartphone as a gamepad controller
-on Linux OS simply by reaching a local address.
+This nodejs application turns your smartphone into a gamepad controller on Linux OS simply by reaching a local address.
 You can virtually plug **up to 4** gamepad controllers.
 
 Demo
@@ -16,6 +15,9 @@ This application is only compatible with Linux OS with the **uinput** kernel mod
 
 Installation
 ------------
+**NOTE**: This application is only tested with node version 9. 10 and 12 are known
+to cause trouble because of the dependencies.
+
     git clone https://github.com/miroof/node-virtual-gamepads
     cd node-virtual-gamepads
     npm install

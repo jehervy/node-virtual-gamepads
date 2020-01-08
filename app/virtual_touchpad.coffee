@@ -15,6 +15,7 @@ class virtual_touchpad
   connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
+        log 'error', "Error on opening /dev/uinput:\n" + JSON.stringify(err)
         error err
       else
         @fd = fd
@@ -63,15 +64,15 @@ class virtual_touchpad
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            log 'warn', "Error on init touchpad write:\n", err
+            log 'error', "Error on init touchpad write:\n" + JSON.stringify(err)
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch err
-              log 'error', "Error on touchpad create dev:\n", err
-              fs.close @fd
+              log 'error', "Error on touchpad create dev:\n" + JSON.stringify(err)
+              fs.closeSync @fd
               @fd = undefined
               if retry < 5
                 log 'info', "Retry to create touchpad"
@@ -83,7 +84,7 @@ class virtual_touchpad
   disconnect: (callback) ->
     if @fd
       ioctl @fd, uinput.UI_DEV_DESTROY
-      fs.close @fd
+      fs.closeSync @fd
       @fd = undefined
       callback()
 

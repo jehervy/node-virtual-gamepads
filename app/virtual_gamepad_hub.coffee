@@ -26,15 +26,17 @@ class virtual_gamepad_hub
         padId++
 
     if !freeSlot
-      log('warning', "Couldn't add new Gamepad: no slot left.")
+      log 'warning', "Couldn't add new gamepad: no slot left."
       callback -1
     else
       # Create and connect the gamepad
-      log('info', 'Gamepad number', padId)
+      log 'info', 'Creating and connecting to gamepad number ' + padId
       @gamepads[padId] = new gamepad()
       @gamepads[padId].connect () ->
         callback padId
       , (err) ->
+        @gamepads[padId] = undefined
+        log 'error', "Couldn't connect to gamepad:\n" + JSON.stringify(err)
         callback -1
 
   disconnectGamepad: (padId, callback) ->
