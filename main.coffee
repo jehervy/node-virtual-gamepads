@@ -4,29 +4,39 @@ Virtual gamepad application
 ###
 
 forever = require('forever-monitor')
-config = require './config.json'
-winston = require('winston')
-winston.level = config.logLevel
+log = require './lib/log'
 
 server = new (forever.Monitor)('server.js', {
   max: Infinity,
   args: [],
 });
 
+exiting = false
+
 server.on 'exit', ->
-  winston.log 'error', 'server.js has exited (gave up to restart)';
+  log 'warning', 'server.js has exited';
 
 earlyDeathCount = 0
 server.on 'exit:code', ->
+  return if exiting
   diedAfter = Date.now() - server.ctime
-  winston.log 'info', 'diedAfter:', diedAfter
+  log 'info', 'diedAfter: ' + diedAfter
   earlyDeathCount = if diedAfter < 5000 then earlyDeathCount+1 else 0
-  winston.log 'info', 'earlyDeathCount:', earlyDeathCount
+  log 'info', 'earlyDeathCount: ' + earlyDeathCount
   if earlyDeathCount >= 3
-    winston.log 'error', 'Died too often too fast.'
+    log 'error', 'Died too often too fast.'
     server.stop()
 
 server.on 'restart', ->
-  winston.log 'error' ,'Forever restarting script for ' + server.times + ' time'
+  log 'error' ,'Forever restarting script for ' + server.times + ' time'
+
+
+for sig in ['SIGTERM', 'SIGINT', 'exit']
+  process.on sig, ((s) -> ->
+    log 'info', 'received ' + s
+    exiting = true
+    server.stop()
+  )(sig)
+
 
 server.start();

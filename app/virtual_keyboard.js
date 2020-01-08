@@ -6,7 +6,7 @@ Virtual keyboard class
  */
 
 (function() {
-  var config, fs, ioctl, uinput, uinputStructs, virtual_keyboard, winston;
+  var fs, ioctl, log, uinput, uinputStructs, virtual_keyboard;
 
   fs = require('fs');
 
@@ -16,20 +16,20 @@ Virtual keyboard class
 
   uinputStructs = require('../lib/uinput_structs');
 
-  config = require('../config.json');
-
-  winston = require('winston');
-
-  winston.level = config.logLevel;
+  log = require('../lib/log');
 
   virtual_keyboard = (function() {
     function virtual_keyboard() {}
 
-    virtual_keyboard.prototype.connect = function(callback, error) {
+    virtual_keyboard.prototype.connect = function(callback, error, retry) {
+      if (retry == null) {
+        retry = 0;
+      }
       return fs.open('/dev/uinput', 'w+', (function(_this) {
         return function(err, fd) {
           var i, j, uidev, uidev_buffer;
           if (err) {
+            log('error', "Error on opening /dev/uinput:\n" + JSON.stringify(err));
             return error(err);
           } else {
             _this.fd = fd;
@@ -48,7 +48,7 @@ Virtual keyboard class
             return fs.write(_this.fd, uidev_buffer, 0, uidev_buffer.length, null, function(err) {
               var error1;
               if (err) {
-                winston.log('error', err);
+                log('error', "Error on init keyboard write:\n" + JSON.stringify(err));
                 return error(err);
               } else {
                 try {
@@ -56,10 +56,16 @@ Virtual keyboard class
                   return callback();
                 } catch (error1) {
                   error = error1;
-                  winston.log('error', error);
-                  fs.close(_this.fd);
+                  log('error', "Error on keyboard dev creation:\n" + JSON.stringify(err));
+                  fs.closeSync(_this.fd);
                   _this.fd = void 0;
-                  return _this.connect(callback, error);
+                  if (retry < 5) {
+                    log('info', "Retry to create keyboard");
+                    return _this.connect(callback, error, retry + 1);
+                  } else {
+                    log('error', "Gave up on creating device");
+                    return error(err);
+                  }
                 }
               }
             });
@@ -71,7 +77,7 @@ Virtual keyboard class
     virtual_keyboard.prototype.disconnect = function(callback) {
       if (this.fd) {
         ioctl(this.fd, uinput.UI_DEV_DESTROY);
-        fs.close(this.fd);
+        fs.closeSync(this.fd);
         this.fd = void 0;
         return callback();
       }
@@ -79,7 +85,7 @@ Virtual keyboard class
 
     virtual_keyboard.prototype.sendEvent = function(event) {
       var ev, ev_buffer, ev_end, ev_end_buffer;
-      winston.log('debug', event);
+      log('debug', event);
       if (this.fd) {
         ev = new uinputStructs.input_event;
         ev.type = event.type;

@@ -7,17 +7,16 @@ fs = require 'fs'
 ioctl = require 'ioctl'
 uinput = require '../lib/uinput'
 uinputStructs = require '../lib/uinput_structs'
-config = require '../config.json'
-winston = require('winston')
-winston.level = config.logLevel
+log = require '../lib/log'
 
 class virtual_keyboard
 
   constructor: () ->
 
-  connect: (callback, error) ->
+  connect: (callback, error, retry=0) ->
     fs.open '/dev/uinput', 'w+', (err, fd) =>
       if err
+        log 'error', "Error on opening /dev/uinput:\n" + JSON.stringify(err)
         error err
       else
         @fd = fd
@@ -38,27 +37,32 @@ class virtual_keyboard
 
         fs.write @fd, uidev_buffer, 0, uidev_buffer.length, null, (err) =>
           if err
-            winston.log 'error', err
+            log 'error', "Error on init keyboard write:\n" + JSON.stringify(err)
             error err
           else
             try
               ioctl @fd, uinput.UI_DEV_CREATE
               callback()
             catch error
-              winston.log 'error', error
-              fs.close @fd
+              log 'error', "Error on keyboard dev creation:\n" + JSON.stringify(err)
+              fs.closeSync @fd
               @fd = undefined
-              @connect callback, error
+              if retry < 5
+                log 'info', "Retry to create keyboard"
+                @connect callback, error, retry+1
+              else
+                log 'error', "Gave up on creating device"
+                error err
 
   disconnect: (callback) ->
     if @fd
       ioctl @fd, uinput.UI_DEV_DESTROY
-      fs.close @fd
+      fs.closeSync @fd
       @fd = undefined
       callback()
 
   sendEvent: (event) ->
-    winston.log 'debug', event
+    log 'debug', event
     if @fd
       ev = new uinputStructs.input_event
       ev.type = event.type

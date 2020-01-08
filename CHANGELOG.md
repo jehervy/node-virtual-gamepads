@@ -1,3 +1,18 @@
+1.4.0
+=====
+  * Fix error when disconnecting clients (missing argument for fs.close)
+  * Using `npm shrinkwrap` to fix dependency's versions
+  * Allow log level to be set with environment variable `LOGLEVEL`
+  * Adding timestamp to log output
+  * Kill server process if main.js (monitoring) gets killed.
+    This will **not work for** `SIGKILL`. When you forcefully kill the
+    server, make sure to kill it's child processes as well if intended.
+  * Improve logging
+  * Bug fixes:
+    * Crash on failing keyboard initialization
+  * Update dependencies
+  * Add physical gamepad support to the client
+
 1.3.0
 =====
   * Introduced Changelog
