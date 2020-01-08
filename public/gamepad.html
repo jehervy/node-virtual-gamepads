@@ -30,6 +30,35 @@
             </table>
         </div>
 
+        <div id="rebind-modal" class="modal-wrapper closed">
+            <div class="modal">
+                <div class="close"></div>
+                <form id="settings-form">
+                    <h1>Controller Configuration</h1>
+                    <hr />
+                    <div class="init-content">
+                        <p>
+                            A controller is connected to your device. Do you want to
+                            change the button mapping?<br />
+                            You can change your mind later by reloading this page.
+                        </p>
+                        <button class="yesBtn">Yes</button>
+                        <button class="noBtn">No</button>
+                    </div>
+                    <div class="calibration-content">
+                        <p>
+                            Please move all axis of you controller at least once
+                            to all extreme positions.<br />
+                            Then return to their rest posistion and press &ldquo;Done&rdquo;.
+                        </p>
+                        <button class="doneBtn">Done</button>
+                    </div>
+                    <div class="content"></div>
+                    <button class="skipBtn">Skip</button>
+                </form>
+            </div>
+        </div>
+
         <div id="dirContainer">
         </div>
 

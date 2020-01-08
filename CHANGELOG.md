@@ -11,6 +11,7 @@ NEXT
   * Bug fixes:
     * Crash on failing keyboard initialization
   * Update dependencies
+  * Add physical gamepad support to the client
 
 1.3.0
 =====
