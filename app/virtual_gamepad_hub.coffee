@@ -5,12 +5,15 @@ Virtual gamepad hub class
 
 gamepad = require './virtual_gamepad'
 log = require '../lib/log'
+config = require '../config'
+
+num_gamepads = config.ledBitFieldSequence.length
 
 class virtual_gamepad_hub
 
   constructor: () ->
     @gamepads = []
-    for i in [0..3]
+    for i in [0..(num_gamepads-1)]
       @gamepads[i] = undefined
 
   connectGamepad: (callback) ->
@@ -19,7 +22,7 @@ class virtual_gamepad_hub
 
     # Check is a slot is available
     # and retrieve the corresponding gamepad id
-    while !freeSlot and padId < 4
+    while !freeSlot and padId < num_gamepads
       if !@gamepads[padId]
         freeSlot = true
       else

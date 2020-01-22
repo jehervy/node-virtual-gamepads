@@ -2,5 +2,6 @@
   "port": 80,
   "useGamepadByDefault": false,
   "analog": true,
-  "logLevel": "info"
+  "logLevel": "info",
+  "ledBitFieldSequence": [1,2,4,8,9,10,12,13,14,15]
 }

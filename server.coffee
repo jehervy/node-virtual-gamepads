@@ -52,10 +52,11 @@ io.on 'connection', (socket) ->
 
   socket.on 'connectGamepad', () ->
     gp_hub.connectGamepad (gamePadId) ->
+      ledBitField = config.ledBitFieldSequence[gamePadId]
       if gamePadId != -1
         log 'info', 'connectGamepad: success'
         socket.gamePadId = gamePadId
-        socket.emit 'gamepadConnected', {padId: gamePadId}
+        socket.emit 'gamepadConnected', {padId: gamePadId, ledBitField: ledBitField}
       else
         log 'warning', 'connectGamepad: failed'
 
