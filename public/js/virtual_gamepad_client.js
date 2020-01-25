@@ -459,7 +459,6 @@ $( window ).load(function() {
     socket.on("gamepadConnected", function(data) {
         slotNumber = data.padId;
         ledBitField = data.ledBitField;
-        console.log("Here I am, and", data)
 
         $(".btn").off("touchstart touchend");
 
