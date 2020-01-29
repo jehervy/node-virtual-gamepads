@@ -8,6 +8,24 @@ log = require '../lib/log'
 config = require '../config'
 
 num_gamepads = config.ledBitFieldSequence.length
+# ledBitFieldSequence should be an array of 'bit fields'.
+# the bit fields are numbers from 0-15, resulting in the following LED arrangements:
+#  0 - ....
+#  1 - *...
+#  2 - .*..
+#  3 - **..
+#  4 - ..*.
+#  5 - *.*.
+#  6 - .**.
+#  7 - ***.
+#  8 - ...*
+#  9 - *..*
+# 10 - .*.*
+# 11 - **.*
+# 12 - ..**
+# 13 - *.**
+# 14 - .***
+# 15 - ****
 
 class virtual_gamepad_hub
 
