@@ -414,12 +414,16 @@ function removegamepad(gamepad) {
  ************************/
 var indicatorOn;
 var slotNumber;
+var ledBitField;
 var initSlotIndicator = function () {
     indicatorOn = false;
     var slotAnimationLoop = function () {
-        if (slotNumber != undefined) {
+        if (ledBitField != undefined) {
             $(".indicator").removeClass("indicatorSelected");
-            $("#indicator_"+(slotNumber+1)).addClass("indicatorSelected");
+            if (ledBitField & 0b0001) { $("#indicator_1").addClass("indicatorSelected"); }
+            if (ledBitField & 0b0010) { $("#indicator_2").addClass("indicatorSelected"); }
+            if (ledBitField & 0b0100) { $("#indicator_3").addClass("indicatorSelected"); }
+            if (ledBitField & 0b1000) { $("#indicator_4").addClass("indicatorSelected"); }
         } else {
             if(indicatorOn) {
                 $(".indicator").removeClass("indicatorSelected");
@@ -454,6 +458,7 @@ $( window ).load(function() {
 
     socket.on("gamepadConnected", function(data) {
         slotNumber = data.padId;
+        ledBitField = data.ledBitField;
 
         $(".btn").off("touchstart touchend");
 

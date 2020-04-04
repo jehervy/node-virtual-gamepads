@@ -6,17 +6,21 @@ Virtual gamepad hub class
  */
 
 (function() {
-  var gamepad, log, virtual_gamepad_hub;
+  var config, gamepad, log, num_gamepads, virtual_gamepad_hub;
 
   gamepad = require('./virtual_gamepad');
 
   log = require('../lib/log');
 
+  config = require('../config');
+
+  num_gamepads = config.ledBitFieldSequence.length;
+
   virtual_gamepad_hub = (function() {
     function virtual_gamepad_hub() {
-      var i, j;
+      var i, j, ref;
       this.gamepads = [];
-      for (i = j = 0; j <= 3; i = ++j) {
+      for (i = j = 0, ref = num_gamepads - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
         this.gamepads[i] = void 0;
       }
     }
@@ -25,7 +29,7 @@ Virtual gamepad hub class
       var freeSlot, padId;
       padId = 0;
       freeSlot = false;
-      while (!freeSlot && padId < 4) {
+      while (!freeSlot && padId < num_gamepads) {
         if (!this.gamepads[padId]) {
           freeSlot = true;
         } else {

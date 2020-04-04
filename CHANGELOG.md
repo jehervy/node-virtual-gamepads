@@ -1,3 +1,9 @@
+Upcoming
+========
+  * Allow theoretically infinitely many gamepads to connect to the server.
+    Adding a setting in `config.json` to set the LED combination for each
+    gamepad.
+
 1.4.0
 =====
   * Fix error when disconnecting clients (missing argument for fs.close)
