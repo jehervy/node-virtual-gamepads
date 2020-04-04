@@ -46,7 +46,7 @@ var initJoystick = function () {
                     if (gamepad.yAxis != null) xy.y = Math.round(255.9999 * (gamepad.yAxis + 1) / 2 - .5);
                 }
                 setDirection(xy);
-            } else if (lastDirection != "none"){
+            } else if (lastDirection !== "none"){
                 lastDirection = "none";
                 setDirection({x: 127, y: 127});
             }
@@ -412,18 +412,22 @@ function removegamepad(gamepad) {
 /*************************
  INITIALIZE SLOT INDICATOR
  ************************/
+var b0001 = parseInt('0001', 2);
+var b0010 = parseInt('0010', 2);
+var b0100 = parseInt('0100', 2);
+var b1000 = parseInt('1000', 2);
 var indicatorOn;
 var slotNumber;
 var ledBitField;
 var initSlotIndicator = function () {
     indicatorOn = false;
     var slotAnimationLoop = function () {
-        if (ledBitField != undefined) {
+        if (ledBitField != null) {
             $(".indicator").removeClass("indicatorSelected");
-            if (ledBitField & 0b0001) { $("#indicator_1").addClass("indicatorSelected"); }
-            if (ledBitField & 0b0010) { $("#indicator_2").addClass("indicatorSelected"); }
-            if (ledBitField & 0b0100) { $("#indicator_3").addClass("indicatorSelected"); }
-            if (ledBitField & 0b1000) { $("#indicator_4").addClass("indicatorSelected"); }
+            if (ledBitField & b0001) { $("#indicator_1").addClass("indicatorSelected"); }
+            if (ledBitField & b0010) { $("#indicator_2").addClass("indicatorSelected"); }
+            if (ledBitField & b0100) { $("#indicator_3").addClass("indicatorSelected"); }
+            if (ledBitField & b1000) { $("#indicator_4").addClass("indicatorSelected"); }
         } else {
             if(indicatorOn) {
                 $(".indicator").removeClass("indicatorSelected");
@@ -433,9 +437,9 @@ var initSlotIndicator = function () {
             indicatorOn = !indicatorOn;
             setTimeout(slotAnimationLoop, 500);
         }
-    }
+    };
     slotAnimationLoop();
-}
+};
 
 /**********************
  HAPTIC CALLBACK METHOD
@@ -470,21 +474,20 @@ $( window ).load(function() {
         slotNumber = data.padId;
         ledBitField = data.ledBitField;
 
-        $(".btn").off("touchstart touchend");
-
-        $(".btn").on("touchstart", function() {
-            btnId = $(this).data("btn");
-            $("#"+btnId).attr("class", "btnSelected");
-            socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 1});
-            hapticCallback();
-        });
-
-        $(".btn").on("touchend", function() {
-            btnId = $(this).data("btn");
-            $("#"+btnId).attr("class", "");
-            socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 0});
-            //hapticCallback();
-        });
+        $(".btn")
+            .off("touchstart touchend")
+            .on("touchstart", function() {
+                var btnId = $(this).data("btn");
+                $("#"+btnId).attr("class", "btnSelected");
+                socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 1});
+                hapticCallback();
+            })
+            .on("touchend", function() {
+                var btnId = $(this).data("btn");
+                $("#"+btnId).attr("class", "");
+                socket.emit("padEvent", {type: 0x01, code: $(this).data("code"), value: 0});
+                //hapticCallback();
+            });
 
         setDirection = function(direction) {
             if (direction.direction != null) {
