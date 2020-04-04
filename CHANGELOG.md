@@ -3,6 +3,7 @@ Upcoming
   * Allow theoretically infinitely many gamepads to connect to the server.
     Adding a setting in `config.json` to set the LED combination for each
     gamepad.
+  * Update dependencies to also support nodejs version 12.
 
 1.4.0
 =====

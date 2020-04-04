@@ -7,11 +7,9 @@ If you get errors on
 
     npm install
 
-make sure you have node version 9 installed. For Ubuntu this might be
-
-    sudo apt-get install nodejs-legacy
-
-Or check out [nvm](https://github.com/nvm-sh/nvm).  
+make sure you have node version 9 or higher installed.
+If you open an issue please provide version numbers for both nodejs and npm and
+state what OS (including version) you're working with.
 
 
 Error: EINVAL, invalid argument
@@ -29,7 +27,6 @@ this may be caused by running on ubuntu or a system that does not come with
 header-files (dev-packages) pre-installed. Try:
 
     sudo apt-get install libudev-dev
-
 
 
 Nothing helped
