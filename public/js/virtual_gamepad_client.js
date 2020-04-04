@@ -447,12 +447,22 @@ var hapticCallback = function () {
     }
 };
 
+// disable context menu e.g. on long touches on android
+function disableContextMenu() {
+    $(window).on("contextmenu", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    });
+}
+
 /****************
  MAIN ENTRY POINT
  ***************/
 $( window ).load(function() {
     initJoystick();
     initSlotIndicator();
+    disableContextMenu();
 
     var socket = io();
 

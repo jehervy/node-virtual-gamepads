@@ -4,6 +4,7 @@ Upcoming
     Adding a setting in `config.json` to set the LED combination for each
     gamepad.
   * Update dependencies to also support nodejs version 12.
+  * Disable context menu (e.g. when long touching on android)
 
 1.4.0
 =====
