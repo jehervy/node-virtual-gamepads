@@ -12,7 +12,8 @@ Virtual gamepad application
 
   log = require('./lib/log');
 
-  server = new forever.Monitor('server.js', {
+  server = new forever.Monitor(
+    require('path').resolve(__dirname, 'server.js'), {
     max: Infinity,
     args: []
   });
