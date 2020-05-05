@@ -5,6 +5,7 @@ Upcoming
     gamepad.
   * Update dependencies to also support nodejs version 12.
   * Disable context menu (e.g. when long touching on android)
+  * Update Readme "developing" section
 
 1.4.0
 =====

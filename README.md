@@ -78,18 +78,18 @@ which can be easily deactivated by turning off the vibrations of the phone.
 
 Developing
 ----------
-For developing you will also have to install coffeescript
+Clone this repository and install its dependencies with
 
-    sudo apt-get install coffeescript
+    npm install
 
-When you changed something in a coffeescript (e.g. main.coffee) run
+When you change something in a coffeescript (e.g. main.coffee) run
 
-    coffee -c main.coffee
+    npx coffee -c main.coffee
 
 This will compile main.coffee to main.js which than can be run with node
 (see [Installation](README.md#installation))
 To compile all coffee files when ever they change run
 
-    coffee -cw .
+    npx coffee -cw .
 
 If you want do add a new keyboard layout please refer to [this file](CREATE_KEYBOARD_LAYOUT.md).
