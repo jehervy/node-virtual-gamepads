@@ -5,8 +5,8 @@ Upcoming
     gamepad.
   * Update dependencies to also support nodejs version 12.
   * Disable context menu (e.g. when long touching on android)
+  * Added [contribution guide](CONTRIBUTING.md)
   * Allow script to be called out of its containing folder
-
 
 1.4.0
 =====

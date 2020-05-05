@@ -78,6 +78,8 @@ which can be easily deactivated by turning off the vibrations of the phone.
 
 Developing
 ----------
+Please read the [contribution guideline](CONTRIBUTING.md) first if you haven't already.
+
 For developing you will also have to install coffeescript
 
     sudo apt-get install coffeescript
