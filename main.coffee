@@ -8,8 +8,8 @@ log = require './lib/log'
 
 server = new (forever.Monitor)(
   require('path').resolve(__dirname, 'server.js'), {
-  max: Infinity,
-  args: [],
+    max: Infinity,
+    args: [],
 });
 
 exiting = false
