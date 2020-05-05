@@ -78,6 +78,8 @@ which can be easily deactivated by turning off the vibrations of the phone.
 
 Developing
 ----------
+Please read the [contribution guideline](CONTRIBUTING.md) first if you haven't already.
+
 Clone this repository and install its dependencies with
 
     npm install
