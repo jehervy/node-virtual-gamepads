@@ -69,11 +69,14 @@ Virtual gamepad application
     });
     socket.on('connectGamepad', function() {
       return gp_hub.connectGamepad(function(gamePadId) {
+        var ledBitField;
+        ledBitField = config.ledBitFieldSequence[gamePadId];
         if (gamePadId !== -1) {
           log('info', 'connectGamepad: success');
           socket.gamePadId = gamePadId;
           return socket.emit('gamepadConnected', {
-            padId: gamePadId
+            padId: gamePadId,
+            ledBitField: ledBitField
           });
         } else {
           return log('warning', 'connectGamepad: failed');

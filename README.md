@@ -15,9 +15,6 @@ This application is only compatible with Linux OS with the **uinput** kernel mod
 
 Installation
 ------------
-**NOTE**: This application is only tested with node version 9. 10 and 12 are known
-to cause trouble because of the dependencies.
-
     git clone https://github.com/miroof/node-virtual-gamepads
     cd node-virtual-gamepads
     npm install
@@ -26,19 +23,8 @@ If you encounter problems while installing or running node-virtual-gamepads have
 a look at the [troubleshooting](TROUBLESHOOTING.md) page.
 
 You can now configure the server to your needs. Just open `config.json`
-with the editor of you choice and adjust the values.
-
-  * `port`: sets the port the web-server is listening on.
-  * `useGamepadByDefault`: if set to `false`, the `/` will redirect to a
-    page where one of gamepad, keyboard, or touchpad can be chosen.
-    If set to `true`, `/` redirects to the gamepad. The input-selection
-    page can still be accessed via `/index.html`.
-  * `analog`: if set to `true` the the above mentioned redirection will
-    append `?analog` to the address. This flag will cause the gamepad's
-    d-pad to act like an analog stick instead of d-pad.
-  * `logLevel`: set it to `"debug"` to get a lot more logging output,
-    to `"warning"` to only get critical output, or even to `"error"` if
-    you want to only get errors logged (not recommended).
+with the editor of you choice and adjust the values. Explanation of the
+individual values can be found in [README_CONFIG.md](README_CONFIG.md).
 
 To start the server run
     
@@ -94,18 +80,18 @@ Developing
 ----------
 Please read the [contribution guideline](CONTRIBUTING.md) first if you haven't already.
 
-For developing you will also have to install coffeescript
+Clone this repository and install its dependencies with
 
-    sudo apt-get install coffeescript
+    npm install
 
-When you changed something in a coffeescript (e.g. main.coffee) run
+When you change something in a coffeescript (e.g. main.coffee) run
 
-    coffee -c main.coffee
+    npx coffee -c main.coffee
 
 This will compile main.coffee to main.js which than can be run with node
 (see [Installation](README.md#installation))
 To compile all coffee files when ever they change run
 
-    coffee -cw .
+    npx coffee -cw .
 
 If you want do add a new keyboard layout please refer to [this file](CREATE_KEYBOARD_LAYOUT.md).

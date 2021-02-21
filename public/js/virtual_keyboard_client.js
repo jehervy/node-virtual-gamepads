@@ -59,6 +59,13 @@ require(["common"], function(common) {
                 socket.on("disconnect", function() {
                     location.reload();
                 });
+
+                // disable context menu e.g. on long touches on android
+                $(window).on("contextmenu", function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return false;
+                });
             });
         });
     });

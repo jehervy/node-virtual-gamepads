@@ -123,6 +123,16 @@ var settings = function () {
 }();
 
 
+// disable context menu e.g. on long touches on android
+$(function() {
+    $(window).on("contextmenu", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    });
+});
+
+
 var app = {
 
     clicks: 0,

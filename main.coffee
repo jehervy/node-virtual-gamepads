@@ -6,9 +6,10 @@ Virtual gamepad application
 forever = require('forever-monitor')
 log = require './lib/log'
 
-server = new (forever.Monitor)('server.js', {
-  max: Infinity,
-  args: [],
+server = new (forever.Monitor)(
+  require('path').resolve(__dirname, 'server.js'), {
+    max: Infinity,
+    args: [],
 });
 
 exiting = false

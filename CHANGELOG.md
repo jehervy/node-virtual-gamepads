@@ -1,3 +1,20 @@
+Upcoming
+========
+
+1.5.0
+=====
+  * Allow theoretically infinitely many gamepads to connect to the server.
+    Adding a setting in `config.json` to set the LED combination for each
+    gamepad.
+  * Update dependencies to also support nodejs version 12.
+  * Allow server to be started from outside its containing folder
+  * Bug fixes:
+    * Fix some touch browsers registering double click on keyboard keys
+    * Disable context menu (e.g. when long touching on android)
+  * Update docs
+    * Added [contribution guide](CONTRIBUTING.md)
+    * Update Readme "developing" section
+
 1.4.0
 =====
   * Fix error when disconnecting clients (missing argument for fs.close)
