@@ -19,14 +19,36 @@ define(["jquery", "./utils", "./settings"], function ($, util, settings) {
             $(this).removeAttr('class');
         });
 
-        $("svg#keyboard > g > g:not(#settings)").on("mousedown touchstart", function (event) {
+        $(document).on("contextmenu",function(){
+            return false;
+        });
+
+        // mousedown mouseup click touchstart touchend
+        $("svg#keyboard > g > g:not(#settings)").on("mousedown mouseup click touchstart touchend", function (event) {
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+        }).on("touchmove", function (event) {
+            if ($(this).data("left")) {
+                return;
+            }
+            if (event.target !== document.elementFromPoint(
+                    event.originalEvent.targetTouches[0].pageX,
+                    event.originalEvent.targetTouches[0].pageY)) {
+                $(this).trigger("mouseleave")
+                  .data("left", "true");
+
+            }
+        }).on("touchend", function (event) {
+            $(this).data("left", null);
+        }).on("mousedown touchstart", function (event) {
             hapticFeedback();
-            event.preventDefault();
+
             $(this).attr('class', 'active');
             var key = util.parseKeyId($(this).attr('id'));
             var keyIsModKey = key[0]; var keyCode = key[1];
 
-            if ($.inArray(keyCode, clickedKeys) == -1) {
+            if ($.inArray(keyCode, clickedKeys) === -1) {
                 clickedKeys.push(keyCode);
                 if (keyIsModKey && settings.stickyModKeys && !(keyCode in activeModKeys)) {
                     activeModKeys[keyCode] = [0, $(this)];
@@ -44,7 +66,7 @@ define(["jquery", "./utils", "./settings"], function ($, util, settings) {
             if (idx >= 0) {
                 clickedKeys.splice(idx, 1);
                 if (keyIsModKey && settings.stickyModKeys && keyCode in activeModKeys) {
-                    if (activeModKeys[keyCode][0] == 0) {
+                    if (activeModKeys[keyCode][0] === 0) {
                         // first key release
                         activeModKeys[keyCode][0] = 1;
                         return;
