@@ -1,5 +1,6 @@
 Upcoming
 ========
+  * Add fullscreen button for the gamepad page.
 
 1.5.0
 =====

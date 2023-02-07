@@ -523,4 +523,12 @@ $( window ).load(function() {
     socket.on("disconnect", function() {
         location.reload();
     });
+
+    $(".fullscreen-link").click(function() {
+      if (document.fullscreen) {
+          document.exitFullscreen();
+      } else {
+          document.body.requestFullscreen();
+      }
+    });
 } );

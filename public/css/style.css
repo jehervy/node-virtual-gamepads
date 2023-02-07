@@ -9,6 +9,10 @@ body {
     font-family: Verdana, Geneva, sans-serif;
 }
 
+body::backdrop {
+    background-color: inherit;
+}
+
 td {
     text-align: center;
 }
@@ -435,3 +439,15 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.fullscreen-link {
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    padding: 8px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
