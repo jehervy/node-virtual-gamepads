@@ -11,6 +11,14 @@ make sure you have node version 9 or higher installed.
 If you open an issue please provide version numbers for both nodejs and npm and
 state what OS (including version) you're working with.
 
+### installing `ioctl` fails
+Errors along the line of
+```
+ValueError: invalid mode: 'rU' while trying to load binding.gyp
+```
+can occur if you have Python 3.11 or newer installed while running on older node verions.
+Try downgrading to Python 3.10 or older or upgrading nodejs.
+
 
 Error: EINVAL, invalid argument
 -------------------------------
