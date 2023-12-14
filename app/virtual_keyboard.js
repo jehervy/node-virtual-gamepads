@@ -85,7 +85,6 @@ Virtual keyboard class
 
     virtual_keyboard.prototype.sendEvent = function(event) {
       var ev, ev_buffer, ev_end, ev_end_buffer;
-      log('debug', event);
       if (this.fd) {
         ev = new uinputStructs.input_event;
         ev.type = event.type;
