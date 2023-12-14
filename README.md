@@ -1,7 +1,7 @@
 # node-virtual-gamepads
 
 This nodejs application turns your smartphone into a gamepad controller on Linux OS simply by reaching a local address.
-You can virtually plug **up to 4** gamepad controllers.
+You can virtually plug in multiple gamepad controllers.
 
 Demo
 ----

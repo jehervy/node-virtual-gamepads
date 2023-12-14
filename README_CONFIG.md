@@ -9,7 +9,7 @@ You can customize the behaviour of the program by changing the values in
     page where one of gamepad, keyboard, or touchpad can be chosen.
     If set to `true`, `/` redirects to the gamepad. The input-selection
     page can still be accessed via `/index.html`.
-  * `analog`: if set to `true` the above mentioned redirection will
+  * `analog`: if set to `true` the above-mentioned redirection will
     append `?analog` to the address. This flag will cause the gamepad's
     d-pad to act like an analog stick instead of d-pad.
   * `logLevel`: set it to `"debug"` to get a lot more logging output,
